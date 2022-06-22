@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AppComponent } from './app.component';
+import { TargetGuard } from './target.guard';
 
 const routes: Routes = [
   {
@@ -7,6 +9,7 @@ const routes: Routes = [
     loadChildren: () =>
       import('./popup/popup.module').then((m) => m.PopupModule),
   },
+  { path: '**', component: AppComponent, canActivate: [TargetGuard] },
 ];
 
 @NgModule({
