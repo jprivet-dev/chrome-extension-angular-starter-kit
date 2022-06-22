@@ -46,8 +46,16 @@ $ git clone {git_clone_ssh}
 
 == Step by Step
 
+=== Generate new app
+
 ```
 $ ng new app --directory . --prefix app --routing true --style scss --skip-git true --defaults --strict
+```
+
+=== Generate the Popup module
+
+```
+$ ng generate module popup --routing
 ```
 
 {back_to_top}
