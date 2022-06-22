@@ -47,7 +47,7 @@ $ git clone {git_clone_ssh}
 == Step by Step
 
 ```
-ng new extension --directory . --prefix ext --routing true --style scss --skip-git true --defaults --strict
+$ ng new app --directory . --prefix app --routing true --style scss --skip-git true --defaults --strict
 ```
 
 {back_to_top}
