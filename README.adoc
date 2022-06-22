@@ -44,6 +44,14 @@ $ git clone {git_clone_ssh}
 
 {back_to_top}
 
+== Step by Step
+
+```
+ng new extension --directory . --prefix ext --skip-git true --style scss --defaults --strict
+```
+
+{back_to_top}
+
 == Resources & Inspiration
 
 * https://www.justjeb.com/post/chrome-extension-with-angular-from-zero-to-a-little-hero
