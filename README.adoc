@@ -58,6 +58,12 @@ $ ng new app --directory . --prefix app --routing true --style scss --skip-git t
 $ ng generate module popup --routing
 ```
 
+=== Generate a gard
+
+```
+$ ng generate guard target
+```
+
 {back_to_top}
 
 == Resources & Inspiration
