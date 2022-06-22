@@ -1,0 +1,61 @@
+:toc: macro
+:toc-title: Summary
+:toclevels: 3
+:numbered:
+
+ifndef::env-github[:icons: font]
+ifdef::env-github[]
+:status:
+:outfilesuffix: .adoc
+:caution-caption: :fire:
+:important-caption: :exclamation:
+:note-caption: :paperclip:
+:tip-caption: :bulb:
+:warning-caption: :warning:
+endif::[]
+
+:back_to_top_target: top-target
+:back_to_top_label: ⬆ Back to top
+:back_to_top: <<{back_to_top_target},{back_to_top_label}>>
+
+:main_title: Chrome Extension & Angular (Starter Kit)
+:git_project: chrome-extension-angular-starter-kit
+:git_username: jprivet-dev
+:git_url: https://github.com/{git_username}/{git_project}
+:git_clone_ssh: git@github.com:{git_username}/{git_project}.git
+
+[#{back_to_top_target}]
+= {main_title}
+
+toc::[]
+
+== Presentation
+
+Base of a Chrome extension made with Angular.
+
+{back_to_top}
+
+== Installation
+
+[subs=attributes+]
+```
+$ git clone {git_clone_ssh}
+```
+
+{back_to_top}
+
+== Resources & Inspiration
+
+* https://www.justjeb.com/post/chrome-extension-with-angular-from-zero-to-a-little-hero
+* https://medium.com/@BiigDigital/angular-et-la-configuration-webpack-1f9398313e43
+* https://stackoverflow.com/questions/44208107/building-chrome-extension-popup-options-and-background-using-angular-cli
+
+{back_to_top}
+
+== License
+
+{main_title} is released under the {git_url}/blob/main/LICENSE[*MIT License*]
+
+---
+
+{back_to_top}
