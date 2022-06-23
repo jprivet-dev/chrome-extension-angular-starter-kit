@@ -23,7 +23,7 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "assets": ["src/favicon.ico", "src/assets", "src/manifest.json", "src/background_wrapper.js"],
+            "assets": ["src/favicon.ico", "src/assets", "src/manifest.json", "src/background_runtime.js"],
             "styles": ["src/styles.scss"],
             "scripts": [],
             "customWebpackConfig": {

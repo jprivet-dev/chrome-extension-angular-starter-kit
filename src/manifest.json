@@ -8,7 +8,7 @@
   },
   "options_page": "index.html?target=options",
   "background": {
-    "service_worker": "background_wrapper.js"
+    "service_worker": "background_runtime.js"
   },
   "content_scripts": [
     {
