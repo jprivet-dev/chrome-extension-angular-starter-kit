@@ -64,6 +64,12 @@ $ ng generate module popup --routing
 $ ng generate guard target
 ```
 
+=== Create background.js
+
+```
+npm i -D @angular-builders/custom-webpack
+```
+
 {back_to_top}
 
 == Resources & Inspiration
@@ -71,6 +77,7 @@ $ ng generate guard target
 * https://www.justjeb.com/post/chrome-extension-with-angular-from-zero-to-a-little-hero
 * https://medium.com/@BiigDigital/angular-et-la-configuration-webpack-1f9398313e43
 * https://stackoverflow.com/questions/44208107/building-chrome-extension-popup-options-and-background-using-angular-cli
+* https://stackoverflow.com/questions/67980170/chrome-extension-background-script-into-multiple-scripts-manifest-v3
 
 {back_to_top}
 
