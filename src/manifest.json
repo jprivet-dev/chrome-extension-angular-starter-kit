@@ -9,5 +9,11 @@
   "options_page": "index.html?target=options",
   "background": {
     "service_worker": "background_wrapper.js"
-  }
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "js": ["content_scripts.js", "runtime.js"]
+    }
+  ]
 }
