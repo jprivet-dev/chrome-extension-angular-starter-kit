@@ -9,6 +9,11 @@ const routes: Routes = [
     loadChildren: () =>
       import('./popup/popup.module').then((m) => m.PopupModule),
   },
+  {
+    path: 'options',
+    loadChildren: () =>
+      import('./options/options.module').then((m) => m.OptionsModule),
+  },
   { path: '**', component: AppComponent, canActivate: [TargetGuard] },
 ];
 
