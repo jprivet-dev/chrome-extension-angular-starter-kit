@@ -3,6 +3,14 @@
   "description": "Base of a Chrome extension made with Angular.",
   "version": "0.0.0",
   "manifest_version": 3,
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://*/"
+  ],
   "action": {
     "default_popup": "index.html?target=popup"
   },

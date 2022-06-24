@@ -1,1 +1,14 @@
-<app-color-picker></app-color-picker>
+<div [style.background-color]="defaultColor">
+  <div>Default color</div>
+  <div>{{defaultColor}}</div>
+</div>
+
+<span [style.color]="color"
+      [cpToggle]="true"
+      [cpDialogDisplay]="'inline'"
+      [cpPositionRelativeToArrow]="true"
+      [(colorPicker)]="color"
+      [cpOKButtonText]="'Apply'"
+      [cpOKButton]="true"
+      (colorPickerSelect)="setDefaultColor()">
+</span>

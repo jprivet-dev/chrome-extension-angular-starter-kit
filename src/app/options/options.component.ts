@@ -6,9 +6,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./options.component.scss'],
 })
 export class OptionsComponent implements OnInit {
-  constructor() {}
+  color = '#ffffff';
+  defaultColor = this.color;
 
   ngOnInit(): void {
     console.info('options started!');
+  }
+
+  public setDefaultColor() {
+    this.defaultColor = this.color;
   }
 }

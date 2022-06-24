@@ -1,1 +1,9 @@
-<app-color-picker></app-color-picker>
+<span [style.color]="color"
+      [cpToggle]="true"
+      [cpDialogDisplay]="'inline'"
+      [cpPositionRelativeToArrow]="true"
+      [(colorPicker)]="color"
+      [cpOKButtonText]="'Apply'"
+      [cpOKButton]="true"
+      (colorPickerSelect)="colorize()">
+</span>
