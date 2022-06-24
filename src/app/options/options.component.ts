@@ -9,6 +9,6 @@ export class OptionsComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    console.log('options');
+    console.info('options started!');
   }
 }

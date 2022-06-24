@@ -1,1 +1,1 @@
-console.log('background');
+console.info('background started!');

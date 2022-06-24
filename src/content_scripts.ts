@@ -1,1 +1,1 @@
-console.log('content_scripts');
+console.info('content_scripts started!');
