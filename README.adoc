@@ -44,24 +44,30 @@ $ git clone {git_clone_ssh}
 
 {back_to_top}
 
-== Step by Step
+== Step by step creation
 
-=== Generate new app
+=== Generate a new application
 
 ```
 $ ng new app --directory . --prefix app --routing true --style scss --skip-git true --defaults --strict
 ```
 
-=== Generate the Popup module
+=== Create the popup module
 
 ```
 $ ng generate module popup --routing
 ```
 
-=== Generate a gard
+=== Create the target guard
 
 ```
 $ ng generate guard target
+```
+
+=== Create the options module
+
+```
+$ ng generate module options --routing
 ```
 
 === Create background.js
@@ -69,6 +75,8 @@ $ ng generate guard target
 ```
 npm i -D @angular-builders/custom-webpack
 ```
+
+=== Create content_scripts.js
 
 {back_to_top}
 
