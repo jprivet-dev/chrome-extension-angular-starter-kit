@@ -50,7 +50,15 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
-              "outputHashing": "none"
+              "outputHashing": "none",
+              "optimization": {
+                "scripts": true,
+                "styles": {
+                  "minify": true,
+                  "inlineCritical": false
+                },
+                "fonts": true
+              }
             },
             "development": {
               "buildOptimizer": false,
