@@ -1,14 +1,16 @@
-<div [style.background-color]="defaultColor">
-  <div>Default color</div>
-  <div>{{defaultColor}}</div>
+<div class="value" [style.background-color]="defaultColor">
+  <h1>Default color</h1>
+  <h2>{{defaultColor}}</h2>
 </div>
 
-<span [style.color]="color"
-      [cpToggle]="true"
-      [cpDialogDisplay]="'inline'"
-      [cpPositionRelativeToArrow]="true"
-      [(colorPicker)]="color"
-      [cpOKButtonText]="'Apply'"
-      [cpOKButton]="true"
-      (colorPickerSelect)="setDefaultColor()">
-</span>
+<div class="wrapper">
+  <span [style.color]="color"
+        [cpToggle]="true"
+        [cpDialogDisplay]="'inline'"
+        [cpPositionRelativeToArrow]="true"
+        [(colorPicker)]="color"
+        [cpOKButtonText]="'Apply'"
+        [cpOKButton]="true"
+        (colorPickerSelect)="setDefaultColor()">
+  </span>
+</div>
