@@ -23,8 +23,7 @@ export class TargetGuard implements CanActivate {
     | boolean
     | UrlTree {
     const target = route.queryParams['target'];
-    console.log('target', target);
-    if (target) {
+    if (['popup', 'options'].includes(target)) {
       this.router.navigate([`/${target}`]);
       return false;
     }
