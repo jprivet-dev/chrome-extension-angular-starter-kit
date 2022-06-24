@@ -77,6 +77,11 @@ npm i -D @angular-builders/custom-webpack
 ```
 
 === Create content_scripts.js
+=== Install a color picker
+
+```
+$ npm i ngx-color-picker
+```
 
 {back_to_top}
 
