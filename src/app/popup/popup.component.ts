@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { colorPickerApply } from '../helpers/color-picker.helpers';
+import { setPageBackgroundColor } from '../helpers/color.helpers';
 
 @Component({
   selector: 'app-popup',
@@ -11,15 +11,20 @@ export class PopupComponent implements OnInit {
 
   ngOnInit(): void {
     console.info('popup started!');
+    chrome.storage.sync.get('color', ({ color }) => {
+      this.color = color;
+    });
   }
 
   public colorize() {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       chrome.scripting.executeScript({
         target: { tabId: tabs[0].id as number },
-        func: colorPickerApply,
+        func: setPageBackgroundColor,
         args: [this.color],
       });
+
+      chrome.storage.sync.set({ color: this.color });
     });
   }
 }
