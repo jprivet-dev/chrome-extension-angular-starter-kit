@@ -21,4 +21,8 @@ export class PresetColorsComponent {
     const color = this.presetColors[this.index];
     this.selectEvent.emit(color);
   }
+
+  colorize(color: string): void {
+    this.presetColors[this.index] = color;
+  }
 }

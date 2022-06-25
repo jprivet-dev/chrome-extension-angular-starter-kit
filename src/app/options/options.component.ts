@@ -15,6 +15,4 @@ export class OptionsComponent implements OnInit {
   select(color: string): void {
     this.color = color;
   }
-
-  colorize(): void {}
 }

@@ -1,4 +1,4 @@
-<app-preset-colors (selectEvent)="select($event)"></app-preset-colors>
+<app-preset-colors #presetColors (selectEvent)="select($event)"></app-preset-colors>
 
 <span [style.color]="color"
       [cpToggle]="true"
@@ -7,5 +7,5 @@
       [(colorPicker)]="color"
       [cpOKButtonText]="'Apply'"
       [cpOKButton]="true"
-      (colorPickerSelect)="colorize()">
+      (colorPickerSelect)="presetColors.colorize(color)">
 </span>
