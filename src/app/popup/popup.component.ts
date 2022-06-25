@@ -31,4 +31,8 @@ export class PopupComponent implements OnInit {
       chrome.storage.sync.set({ color: this.color });
     });
   }
+
+  openOptionsPage(): void {
+    chrome.runtime.openOptionsPage();
+  }
 }

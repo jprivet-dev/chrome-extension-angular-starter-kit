@@ -1,3 +1,7 @@
+<h2>
+  Change the background color of the current page
+</h2>
+
 <span [style.color]="color"
       [cpToggle]="true"
       [cpDialogDisplay]="'inline'"
@@ -9,3 +13,7 @@
 </span>
 
 <app-preset-colors (selectEvent)="select($event)"></app-preset-colors>
+
+<button class="btn-options" (click)="openOptionsPage()">
+  Options
+</button>

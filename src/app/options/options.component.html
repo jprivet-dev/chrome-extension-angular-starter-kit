@@ -1,11 +1,26 @@
-<app-preset-colors #presetColors (selectEvent)="select($event)"></app-preset-colors>
+<div class="container">
+  <h1>
+    Preset colors
+  </h1>
 
-<span [style.color]="color"
-      [cpToggle]="true"
-      [cpDialogDisplay]="'inline'"
-      [cpPositionRelativeToArrow]="true"
-      [(colorPicker)]="color"
-      [cpOKButtonText]="'Apply'"
-      [cpOKButton]="true"
-      (colorPickerSelect)="presetColors.colorize(color)">
-</span>
+  <app-preset-colors
+    #presetColors
+    (selectEvent)="select($event)"
+  ></app-preset-colors>
+
+  <span
+    [style.color]="color"
+    [cpToggle]="true"
+    [cpDialogDisplay]="'inline'"
+    [cpPositionRelativeToArrow]="true"
+    [(colorPicker)]="color"
+    [cpOKButtonText]="'Apply'"
+    [cpOKButton]="true"
+    (colorPickerSelect)="presetColors.colorize(color)"
+  >
+  </span>
+
+  <button class="btn-reset" (click)="presetColors.reset()">
+    Reset all colors
+  </button>
+</div>
