@@ -16,7 +16,11 @@ export class PopupComponent implements OnInit {
     });
   }
 
-  public colorize() {
+  select(color: string): void {
+    this.color = color;
+  }
+
+  colorize() {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       chrome.scripting.executeScript({
         target: { tabId: tabs[0].id as number },

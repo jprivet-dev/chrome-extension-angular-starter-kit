@@ -1,16 +1,11 @@
-<div class="value" [style.background-color]="defaultColor">
-  <h1>Default color</h1>
-  <h2>{{defaultColor}}</h2>
-</div>
+<app-preset-colors (selectEvent)="select($event)"></app-preset-colors>
 
-<div class="wrapper">
-  <span [style.color]="color"
-        [cpToggle]="true"
-        [cpDialogDisplay]="'inline'"
-        [cpPositionRelativeToArrow]="true"
-        [(colorPicker)]="color"
-        [cpOKButtonText]="'Apply'"
-        [cpOKButton]="true"
-        (colorPickerSelect)="setDefaultColor()">
-  </span>
-</div>
+<span [style.color]="color"
+      [cpToggle]="true"
+      [cpDialogDisplay]="'inline'"
+      [cpPositionRelativeToArrow]="true"
+      [(colorPicker)]="color"
+      [cpOKButtonText]="'Apply'"
+      [cpOKButton]="true"
+      (colorPickerSelect)="colorize()">
+</span>

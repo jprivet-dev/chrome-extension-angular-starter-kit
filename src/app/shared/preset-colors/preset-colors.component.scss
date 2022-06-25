@@ -1,0 +1,12 @@
+button {
+  display: inline-block;
+  border: 2px solid #ffffff;
+  margin: 10px;
+  width: 38px;
+  height: 38px;
+  cursor: pointer;
+}
+
+.current {
+  border-color: #000000;
+}
