@@ -1,7 +1,9 @@
+<div class="color" *ngFor="let color of presetColors; let i = index">
+  <div class="bg-checkerboard"></div>
   <button
-    class="btn-color"
-    *ngFor="let color of presetColors; let i = index"
+    class="btn-select"
     [style.background-color]="presetColors[i]"
     [ngClass]="{ current: i === index }"
     (click)="select(i)"
   ></button>
+</div>

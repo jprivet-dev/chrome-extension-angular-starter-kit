@@ -1,16 +1,18 @@
 .container {
   width: 232px;
-  margin: auto;
+  margin: 20px auto;
+  padding: 30px 40px;
+  background-color: #ffffff;
 }
 
 h1 {
+  margin: 0;
   text-align: center;
   text-transform: uppercase;
 }
 
 .btn-reset {
   display: block;
-  border: none;
   margin-top: 20px;
   padding: 10px;
   width: 100%;

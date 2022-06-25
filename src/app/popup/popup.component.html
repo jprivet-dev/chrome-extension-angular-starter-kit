@@ -1,19 +1,19 @@
-<h2>
-  Change the background color of the current page
-</h2>
+<div class="container">
+  <h2>Change the background color of the current page</h2>
 
-<span [style.color]="color"
-      [cpToggle]="true"
-      [cpDialogDisplay]="'inline'"
-      [cpPositionRelativeToArrow]="true"
-      [(colorPicker)]="color"
-      [cpOKButtonText]="'Apply'"
-      [cpOKButton]="true"
-      (colorPickerSelect)="colorize()">
-</span>
+  <span
+    [style.color]="color"
+    [cpToggle]="true"
+    [cpDialogDisplay]="'inline'"
+    [cpPositionRelativeToArrow]="true"
+    [(colorPicker)]="color"
+    [cpOKButtonText]="'Apply'"
+    [cpOKButton]="true"
+    (colorPickerSelect)="colorize()"
+  >
+  </span>
 
-<app-preset-colors (selectEvent)="select($event)"></app-preset-colors>
+  <app-preset-colors (selectEvent)="select($event)"></app-preset-colors>
 
-<button class="btn-options" (click)="openOptionsPage()">
-  Options
-</button>
+  <button class="btn-options" (click)="openOptionsPage()">Options</button>
+</div>

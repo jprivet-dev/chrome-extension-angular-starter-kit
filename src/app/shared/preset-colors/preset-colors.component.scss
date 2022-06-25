@@ -1,12 +1,31 @@
-.btn-color {
+$width: 40px;
+
+.color {
   display: inline-block;
-  border: 2px solid #ffffff;
-  margin: 10px;
-  width: 38px;
-  height: 38px;
-  cursor: pointer;
+  position: relative;
+  margin: 20px 9px;
 }
 
-.current {
-  border-color: #000000;
+.bg-checkerboard {
+  width: $width;
+  height: $width;
+  border-radius: 50%;
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAh0lEQVRYR+2W0QlAMQgD60zdfwOdqa8TmI/wQMr5K0I5bZLIzLOa2nt37VVVbd+dDx5obgCC3KBLwJ2ff4PnVidkf+ucIhw80HQaCLo3DMH3CRK3iFsmAWVl6hPNDwt8EvNE5q+YuEXcMgkonVM6SdyCoEvAnZ8v1Hjx817MilmxSUB5rdLJDycZgUAZUch/AAAAAElFTkSuQmCC);
+}
+
+.btn-select {
+  display: block;
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: $width;
+  height: $width;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  cursor: pointer;
+
+  &.current {
+    border-color: #000000;
+  }
 }
