@@ -16,7 +16,7 @@ export class PresetColorsComponent implements OnInit {
 
   ngOnInit() {
     chrome.storage.sync.get('presetColors', ({ presetColors }) => {
-      this.presetColors = presetColors ?? this.initColors;
+      this.presetColors = presetColors ?? [...this.initColors];
     });
   }
 
@@ -36,7 +36,7 @@ export class PresetColorsComponent implements OnInit {
   }
 
   reset(): void {
-    this.presetColors = this.initColors;
+    this.presetColors = [...this.initColors];
     chrome.storage.sync.set({ presetColors: this.presetColors });
     this.select(this.index);
   }

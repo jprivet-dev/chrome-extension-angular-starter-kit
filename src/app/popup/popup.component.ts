@@ -7,9 +7,9 @@ import { setPageBackgroundColor } from '../helpers/color.helpers';
   styleUrls: ['./popup.component.scss'],
 })
 export class PopupComponent implements OnInit {
-  color = '#ffffff';
+  color: string = '#ffffff';
 
-  ngOnInit(): void {
+  ngOnInit() {
     console.info('popup started!');
     chrome.storage.sync.get('color', ({ color }) => {
       this.color = color;
@@ -20,7 +20,7 @@ export class PopupComponent implements OnInit {
     this.color = color;
   }
 
-  colorize() {
+  colorize(): void {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       chrome.scripting.executeScript({
         target: { tabId: tabs[0].id as number },
