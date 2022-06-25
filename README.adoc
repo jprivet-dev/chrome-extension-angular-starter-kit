@@ -142,6 +142,7 @@ put
 * https://medium.com/@BiigDigital/angular-et-la-configuration-webpack-1f9398313e43
 * https://stackoverflow.com/questions/44208107/building-chrome-extension-popup-options-and-background-using-angular-cli
 * https://stackoverflow.com/questions/67980170/chrome-extension-background-script-into-multiple-scripts-manifest-v3
+* https://developer.chrome.com/docs/extensions/mv3/getstarted/
 
 {back_to_top}
 
