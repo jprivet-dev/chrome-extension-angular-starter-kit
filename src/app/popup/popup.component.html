@@ -13,7 +13,10 @@
   >
   </span>
 
-  <app-preset-colors (selectEvent)="select($event)"></app-preset-colors>
+  <app-preset-colors
+    [selectionIndicator]="false"
+    (selectEvent)="select($event)"
+  ></app-preset-colors>
 
   <button class="btn-options" (click)="openOptionsPage()">Options</button>
 </div>

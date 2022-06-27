@@ -6,9 +6,10 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
   styleUrls: ['./preset-colors.component.scss'],
 })
 export class PresetColorsComponent implements OnInit {
-  @Input() color: string = '#ffffff';
+  @Input() selectionIndicator: boolean = true;
   @Output() selectEvent = new EventEmitter<string>();
 
+  color: string = '';
   index: number = 0;
   presetColors: string[] = [];
 
@@ -17,6 +18,7 @@ export class PresetColorsComponent implements OnInit {
   ngOnInit() {
     chrome.storage.sync.get('presetColors', ({ presetColors }) => {
       this.presetColors = presetColors ?? [...this.initColors];
+      this.select(0);
     });
   }
 
