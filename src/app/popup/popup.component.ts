@@ -31,6 +31,17 @@ export class PopupComponent implements OnInit {
     });
   }
 
+  removeColor(): void {
+    chrome.tabs.query({ active: true, currentWindow: true }, ([currentTab]) => {
+      chrome.storage.sync.remove('color').then(() => {
+        chrome.scripting.executeScript({
+          target: { tabId: currentTab.id as number },
+          func: applyPageBackgroundColorFromStorage,
+        });
+      });
+    });
+  }
+
   openOptionsPage(): void {
     chrome.runtime.openOptionsPage();
   }

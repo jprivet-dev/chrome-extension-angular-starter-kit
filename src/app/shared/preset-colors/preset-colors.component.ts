@@ -39,7 +39,8 @@ export class PresetColorsComponent implements OnInit {
 
   reset(): void {
     this.presetColors = [...this.initColors];
-    chrome.storage.sync.set({ presetColors: this.presetColors });
-    this.select(this.index);
+    chrome.storage.sync.set({ presetColors: this.presetColors }).then(() => {
+      this.select(this.index);
+    });
   }
 }

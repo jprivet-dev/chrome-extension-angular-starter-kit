@@ -7,7 +7,8 @@ h2 {
   margin-top: 0;
 }
 
-.btn-options {
+.btn-options,
+.btn-remove-color {
   display: block;
   border: none;
   padding: 10px;
@@ -16,4 +17,8 @@ h2 {
   border: #c3c3c3 solid 1px;
   background-color: #ffffff;
   cursor: pointer;
+}
+
+.btn-remove-color {
+  margin-bottom: 10px;
 }
