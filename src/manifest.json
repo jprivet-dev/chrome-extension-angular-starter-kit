@@ -3,6 +3,12 @@
   "description": "Base of a Chrome extension made with Angular.",
   "version": "0.0.0",
   "manifest_version": 3,
+  "icons": {
+    "16": "assets/img/icon-16.png",
+    "48": "assets/img/icon-48.png",
+    "128": "assets/img/icon-128.png",
+    "256": "assets/img/icon-256.png"
+  },
   "permissions": [
     "storage",
     "activeTab",
