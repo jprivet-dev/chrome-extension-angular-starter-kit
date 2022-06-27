@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { setPageBackgroundColor } from '../helpers/color.helpers';
+import { setPageBackgroundColor } from '../utils/color';
 
 @Component({
   selector: 'app-popup',
