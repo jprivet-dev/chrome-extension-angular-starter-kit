@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { setPageBackgroundColor } from '../utils/color';
+import { applyPageBackgroundColorFromStorage } from '../utils';
 
 @Component({
   selector: 'app-popup',
@@ -25,8 +25,7 @@ export class PopupComponent implements OnInit {
       chrome.storage.sync.set({ color: this.color }).then(() => {
         chrome.scripting.executeScript({
           target: { tabId: currentTab.id as number },
-          func: setPageBackgroundColor,
-          args: [this.color],
+          func: applyPageBackgroundColorFromStorage,
         });
       });
     });
