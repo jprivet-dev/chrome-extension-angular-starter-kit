@@ -1,4 +1,4 @@
-import { ColorData } from '../shared/models';
+import { ColorData } from '../color.model';
 
 export const getColorTextByHost = (
   colors: ColorData[] = [],

@@ -1,4 +1,4 @@
-import { setDocumentBackgroundColorByHost } from './app/utils';
+import { setDocumentBackgroundColorByHost } from './app/shared/utils';
 
 console.info('content executed!');
 

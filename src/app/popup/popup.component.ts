@@ -4,7 +4,7 @@ import {
   getHostFromTab,
   removeColorByHost,
   setColorByHost,
-} from '../utils';
+} from '../shared/utils';
 import Tab = chrome.tabs.Tab;
 
 @Component({
