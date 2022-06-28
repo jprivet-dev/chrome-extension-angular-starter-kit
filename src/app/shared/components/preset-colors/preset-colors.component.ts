@@ -23,10 +23,6 @@ export class PresetColorsComponent implements OnInit {
     });
   }
 
-  setColor(): void {
-    this.presetColors[this.index] = this.color;
-  }
-
   select(i: number): void {
     this.index = i;
     const color = this.presetColors[this.index];

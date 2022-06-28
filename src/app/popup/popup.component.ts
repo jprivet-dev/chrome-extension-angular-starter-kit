@@ -14,15 +14,18 @@ import Tab = chrome.tabs.Tab;
   styleUrls: ['./popup.component.scss'],
 })
 export class PopupComponent implements OnInit {
+  tab!: Tab;
+  host: string = '';
   colorPicker: string = '';
 
   ngOnInit() {
     console.info('popup executed!');
 
     chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
-      const host = getHostFromTab(tab);
+      this.tab = tab;
+      this.host = getHostFromTab(tab);
       chrome.storage.sync.get(STORAGE_COLORS, ({ colors }) => {
-        this.colorPicker = getColorTextByHost(colors, host);
+        this.colorPicker = getColorTextByHost(colors, this.host);
       });
     });
   }
