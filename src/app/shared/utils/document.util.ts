@@ -1,5 +1,5 @@
 import { ColorData } from '../color.model';
-import { getColorTextByHost } from './color';
+import { getColorTextByHost } from './color.util';
 
 export const setDocumentBackgroundColorByHost = (
   colors: ColorData[] = [],

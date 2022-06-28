@@ -1,3 +1,3 @@
-export * from './color';
-export * from './document';
-export * from './tabs';
+export * from './color.util';
+export * from './document.util';
+export * from './tabs.util';

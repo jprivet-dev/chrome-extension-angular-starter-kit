@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { STORAGE_PRESET_COLORS } from '../../storage.constant';
 
 @Component({
   selector: 'app-preset-colors',
@@ -16,7 +17,7 @@ export class PresetColorsComponent implements OnInit {
   private initColors: string[] = ['#3aa757', '#e8453c', '#f9bb2d', '#4688f1'];
 
   ngOnInit() {
-    chrome.storage.sync.get('presetColors', ({ presetColors }) => {
+    chrome.storage.sync.get(STORAGE_PRESET_COLORS, ({ presetColors }) => {
       this.presetColors = presetColors ?? [...this.initColors];
       this.select(0);
     });
@@ -34,13 +35,15 @@ export class PresetColorsComponent implements OnInit {
 
   colorize(color: string): void {
     this.presetColors[this.index] = color;
-    chrome.storage.sync.set({ presetColors: this.presetColors });
+    chrome.storage.sync.set({ [STORAGE_PRESET_COLORS]: this.presetColors });
   }
 
   reset(): void {
     this.presetColors = [...this.initColors];
-    chrome.storage.sync.set({ presetColors: this.presetColors }).then(() => {
-      this.select(this.index);
-    });
+    chrome.storage.sync
+      .set({ [STORAGE_PRESET_COLORS]: this.presetColors })
+      .then(() => {
+        this.select(this.index);
+      });
   }
 }

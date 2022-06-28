@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { STORAGE_COLORS } from '../shared/storage.constant';
 import {
   getColorTextByHost,
   getHostFromTab,
@@ -13,29 +14,34 @@ import Tab = chrome.tabs.Tab;
   styleUrls: ['./popup.component.scss'],
 })
 export class PopupComponent implements OnInit {
-  color: string = '';
+  colorPicker: string = '';
 
   ngOnInit() {
     console.info('popup executed!');
 
     chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
       const host = getHostFromTab(tab);
-      chrome.storage.sync.get('colors', ({ colors }) => {
-        this.color = getColorTextByHost(colors, host);
+      chrome.storage.sync.get(STORAGE_COLORS, ({ colors }) => {
+        this.colorPicker = getColorTextByHost(colors, host);
       });
     });
   }
 
   select(color: string): void {
-    this.color = color;
+    this.colorPicker = color;
   }
 
   setColor(): void {
     chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
-      const host = getHostFromTab(tab);
-      chrome.storage.sync.get('colors', ({ colors }) => {
+      chrome.storage.sync.get(STORAGE_COLORS, ({ colors }) => {
         chrome.storage.sync
-          .set({ colors: setColorByHost(colors, host, this.color) })
+          .set({
+            [STORAGE_COLORS]: setColorByHost(
+              colors,
+              getHostFromTab(tab),
+              this.colorPicker
+            ),
+          })
           .then(() => this.executeScript(tab));
       });
     });
@@ -43,10 +49,11 @@ export class PopupComponent implements OnInit {
 
   removeColor(): void {
     chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
-      const host = getHostFromTab(tab);
-      chrome.storage.sync.get('colors', ({ colors }) => {
+      chrome.storage.sync.get(STORAGE_COLORS, ({ colors }) => {
         chrome.storage.sync
-          .set({ colors: removeColorByHost(colors, host) })
+          .set({
+            [STORAGE_COLORS]: removeColorByHost(colors, getHostFromTab(tab)),
+          })
           .then(() => this.executeScript(tab));
       });
     });

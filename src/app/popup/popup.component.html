@@ -2,11 +2,11 @@
   <h2>Change the background color of the current page</h2>
 
   <span
-    [style.color]="color"
+    [style.color]="colorPicker"
     [cpToggle]="true"
     [cpDialogDisplay]="'inline'"
     [cpPositionRelativeToArrow]="true"
-    [(colorPicker)]="color"
+    [(colorPicker)]="colorPicker"
     [cpOKButtonText]="'Apply'"
     [cpOKButton]="true"
     (colorPickerSelect)="setColor()"
