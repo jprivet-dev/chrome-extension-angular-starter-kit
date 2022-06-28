@@ -9,7 +9,7 @@ export class OptionsComponent implements OnInit {
   color: string = '#ffffff';
 
   ngOnInit(): void {
-    console.info('options started!');
+    console.info('options executed!');
   }
 
   select(color: string): void {

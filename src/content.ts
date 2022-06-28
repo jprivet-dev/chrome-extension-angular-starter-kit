@@ -1,5 +1,7 @@
-import { applyPageBackgroundColorFromStorage } from './app/utils';
+import { setDocumentBackgroundColorByHost } from './app/utils';
 
-console.info('content started!');
+console.info('content executed!');
 
-applyPageBackgroundColorFromStorage();
+chrome.storage.sync.get('colors', ({ colors }) => {
+  setDocumentBackgroundColorByHost(colors, window.location.host);
+});

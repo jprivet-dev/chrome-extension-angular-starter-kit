@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { applyPageBackgroundColorFromStorage } from '../utils';
+import {
+  getColorTextByHost,
+  getHostFromTab,
+  removeColorByHost,
+  setColorByHost,
+} from '../utils';
+import Tab = chrome.tabs.Tab;
 
 @Component({
   selector: 'app-popup',
@@ -7,12 +13,16 @@ import { applyPageBackgroundColorFromStorage } from '../utils';
   styleUrls: ['./popup.component.scss'],
 })
 export class PopupComponent implements OnInit {
-  color: string = '#ffffff';
+  color: string = '';
 
   ngOnInit() {
-    console.info('popup started!');
-    chrome.storage.sync.get('color', ({ color }) => {
-      this.color = color;
+    console.info('popup executed!');
+
+    chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
+      const host = getHostFromTab(tab);
+      chrome.storage.sync.get('colors', ({ colors }) => {
+        this.color = getColorTextByHost(colors, host);
+      });
     });
   }
 
@@ -20,29 +30,36 @@ export class PopupComponent implements OnInit {
     this.color = color;
   }
 
-  colorize(): void {
-    chrome.tabs.query({ active: true, currentWindow: true }, ([currentTab]) => {
-      chrome.storage.sync.set({ color: this.color }).then(() => {
-        chrome.scripting.executeScript({
-          target: { tabId: currentTab.id as number },
-          func: applyPageBackgroundColorFromStorage,
-        });
+  setColor(): void {
+    chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
+      const host = getHostFromTab(tab);
+      chrome.storage.sync.get('colors', ({ colors }) => {
+        chrome.storage.sync
+          .set({ colors: setColorByHost(colors, host, this.color) })
+          .then(() => this.executeScript(tab));
       });
     });
   }
 
   removeColor(): void {
-    chrome.tabs.query({ active: true, currentWindow: true }, ([currentTab]) => {
-      chrome.storage.sync.remove('color').then(() => {
-        chrome.scripting.executeScript({
-          target: { tabId: currentTab.id as number },
-          func: applyPageBackgroundColorFromStorage,
-        });
+    chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
+      const host = getHostFromTab(tab);
+      chrome.storage.sync.get('colors', ({ colors }) => {
+        chrome.storage.sync
+          .set({ colors: removeColorByHost(colors, host) })
+          .then(() => this.executeScript(tab));
       });
     });
   }
 
   openOptionsPage(): void {
     chrome.runtime.openOptionsPage();
+  }
+
+  private executeScript(tab: Tab) {
+    chrome.scripting.executeScript({
+      target: { tabId: tab.id as number },
+      files: ['content.js', 'runtime.js'],
+    });
   }
 }
