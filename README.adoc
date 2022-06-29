@@ -144,6 +144,10 @@ put
 * https://stackoverflow.com/questions/67980170/chrome-extension-background-script-into-multiple-scripts-manifest-v3
 * https://developer.chrome.com/docs/extensions/mv3/getstarted/
 * https://developer.chrome.com/docs/extensions/mv3/content_scripts/
+* https://coryrylan.com/blog/angular-observable-data-services
+* https://blog.angular-university.io/how-to-build-angular2-apps-using-rxjs-observable-data-services-pitfalls-to-avoid/
+* https://medium.com/@marcosloic/managing-state-in-angular-2-using-rxjs-b849d6bbd5a5
+
 
 {back_to_top}
 
