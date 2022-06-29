@@ -1,57 +1,6 @@
-$width: 40px;
-
 .container {
   width: 232px;
   margin: 20px auto;
   padding: 30px 40px;
   background-color: #ffffff;
-}
-
-h1 {
-  margin: 0;
-  text-align: center;
-  text-transform: uppercase;
-}
-
-h2 {
-  margin-top: 0;
-}
-
-.btn-reset {
-  display: block;
-  margin-top: 20px;
-  padding: 10px;
-  width: 100%;
-  color: #494949;
-  border: #c3c3c3 solid 1px;
-  background-color: #ffffff;
-  cursor: pointer;
-}
-
-.colors-by-host {
-  .item {
-    .color,
-    .host {
-      position: relative;
-      display: inline-block;
-      height: $width;
-      line-height: $width;
-    }
-
-    .color {
-      width: $width;
-      border-radius: 50%;
-      background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAh0lEQVRYR+2W0QlAMQgD60zdfwOdqa8TmI/wQMr5K0I5bZLIzLOa2nt37VVVbd+dDx5obgCC3KBLwJ2ff4PnVidkf+ucIhw80HQaCLo3DMH3CRK3iFsmAWVl6hPNDwt8EvNE5q+YuEXcMgkonVM6SdyCoEvAnZ8v1Hjx817MilmxSUB5rdLJDycZgUAZUch/AAAAAElFTkSuQmCC);
-
-      .value {
-        box-sizing: border-box;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: $width;
-        height: $width;
-        border-radius: 50%;
-      }
-    }
-  }
 }
