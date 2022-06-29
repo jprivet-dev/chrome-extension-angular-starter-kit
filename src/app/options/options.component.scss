@@ -30,7 +30,7 @@ h2 {
 
 .colors-by-host {
   .item {
-    .sticker,
+    .color,
     .host {
       position: relative;
       display: inline-block;
@@ -38,17 +38,12 @@ h2 {
       line-height: $width;
     }
 
-    .sticker {
+    .color {
       width: $width;
+      border-radius: 50%;
+      background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAh0lEQVRYR+2W0QlAMQgD60zdfwOdqa8TmI/wQMr5K0I5bZLIzLOa2nt37VVVbd+dDx5obgCC3KBLwJ2ff4PnVidkf+ucIhw80HQaCLo3DMH3CRK3iFsmAWVl6hPNDwt8EvNE5q+YuEXcMgkonVM6SdyCoEvAnZ8v1Hjx817MilmxSUB5rdLJDycZgUAZUch/AAAAAElFTkSuQmCC);
 
-      .checkerboard {
-        width: $width;
-        height: $width;
-        border-radius: 50%;
-        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAh0lEQVRYR+2W0QlAMQgD60zdfwOdqa8TmI/wQMr5K0I5bZLIzLOa2nt37VVVbd+dDx5obgCC3KBLwJ2ff4PnVidkf+ucIhw80HQaCLo3DMH3CRK3iFsmAWVl6hPNDwt8EvNE5q+YuEXcMgkonVM6SdyCoEvAnZ8v1Hjx817MilmxSUB5rdLJDycZgUAZUch/AAAAAElFTkSuQmCC);
-      }
-
-      .color {
+      .value {
         box-sizing: border-box;
         position: absolute;
         top: 0;

@@ -31,9 +31,9 @@
       class="item"
       *ngFor="let colorData of colors"
     >
-      <div class="sticker">
+      <div class="color">
         <div class="checkerboard"></div>
-        <div class="color" [style.background-color]="colorData.color"></div>
+        <div class="value" [style.background-color]="colorData.color"></div>
       </div>
       <div class="host">{{ colorData.host }}</div>
     </div>
