@@ -7,18 +7,38 @@
   ></app-preset-colors>
 
   <span
-    [style.color]="color"
+    [style.color]="colorPicker"
     [cpToggle]="true"
     [cpDialogDisplay]="'inline'"
     [cpPositionRelativeToArrow]="true"
-    [(colorPicker)]="color"
+    [(colorPicker)]="colorPicker"
     [cpOKButtonText]="'Apply'"
     [cpOKButton]="true"
-    (colorPickerSelect)="presetColors.colorize(color)"
+    (colorPickerSelect)="presetColors.colorize(colorPicker)"
   >
   </span>
 
   <button class="btn-reset" (click)="presetColors.reset()">
     Reset all colors
   </button>
+</div>
+
+<div class="container">
+  <h2>List of applied colors</h2>
+
+  <div class="colors-by-host" *ngIf="colors.length > 0; else noColor">
+    <div
+      class="item"
+      *ngFor="let colorData of colors"
+    >
+      <div class="sticker">
+        <div class="checkerboard"></div>
+        <div class="color" [style.background-color]="colorData.color"></div>
+      </div>
+      <div class="host">{{ colorData.host }}</div>
+    </div>
+  </div>
+  <ng-template #noColor>
+    <span>No colors applied</span>
+  </ng-template>
 </div>
