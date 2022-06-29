@@ -2,7 +2,8 @@
   <h1>Preset colors</h1>
 
   <app-preset-colors
-    #presetColors
+    [presetColors]="presetColors$ | async"
+    [currentIndex]="currentIndex$ | async"
     (selectEvent)="select($event)"
   ></app-preset-colors>
 
@@ -14,11 +15,11 @@
     [(colorPicker)]="colorPicker"
     [cpOKButtonText]="'Apply'"
     [cpOKButton]="true"
-    (colorPickerSelect)="presetColors.colorize(colorPicker)"
+    (colorPickerSelect)="colorize(colorPicker)"
   >
   </span>
 
-  <button class="btn-reset" (click)="presetColors.reset()">
+  <button class="btn-reset" (click)="reset()">
     Reset all colors
   </button>
 </div>

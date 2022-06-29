@@ -1,45 +1,17 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { STORAGE_PRESET_COLORS } from '../../storage.constant';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-preset-colors',
   templateUrl: './preset-colors.component.html',
   styleUrls: ['./preset-colors.component.scss'],
 })
-export class PresetColorsComponent implements OnInit {
+export class PresetColorsComponent {
+  @Input() presetColors: string[] | null = [];
+  @Input() currentIndex: number | null = 0;
   @Input() selectionIndicator: boolean = true;
-  @Output() selectEvent = new EventEmitter<string>();
+  @Output() selectEvent = new EventEmitter<number>();
 
-  color: string = '';
-  index: number = 0;
-  presetColors: string[] = [];
-
-  private initColors: string[] = ['#3aa757', '#e8453c', '#f9bb2d', '#4688f1'];
-
-  ngOnInit() {
-    chrome.storage.sync.get(STORAGE_PRESET_COLORS, ({ presetColors }) => {
-      this.presetColors = presetColors ?? [...this.initColors];
-      this.select(0);
-    });
-  }
-
-  select(i: number): void {
-    this.index = i;
-    const color = this.presetColors[this.index];
-    this.selectEvent.emit(color);
-  }
-
-  colorize(color: string): void {
-    this.presetColors[this.index] = color;
-    chrome.storage.sync.set({ [STORAGE_PRESET_COLORS]: this.presetColors });
-  }
-
-  reset(): void {
-    this.presetColors = [...this.initColors];
-    chrome.storage.sync
-      .set({ [STORAGE_PRESET_COLORS]: this.presetColors })
-      .then(() => {
-        this.select(this.index);
-      });
+  select(index: number): void {
+    this.selectEvent.emit(index);
   }
 }

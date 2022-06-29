@@ -2,7 +2,7 @@
   <button
     class="btn-select"
     [style.background-color]="color"
-    [ngClass]="{ current: selectionIndicator && i === index }"
+    [ngClass]="{ current: selectionIndicator && i === currentIndex }"
     (click)="select(i)"
   ></button>
 </div>
