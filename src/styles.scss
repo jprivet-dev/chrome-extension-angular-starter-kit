@@ -1,12 +1,26 @@
 body {
   margin: 0;
-  background-color: #eeeeee;
+  background-color: #fafafa;
 }
 
-.cp-ok-button-class {
-  width: 100%;
-  margin: 0 !important;
-  padding: 10px;
-  border: none;
-  cursor: pointer;
+section {
+  $width: 35px;
+
+  background-color: #4688f1;
+  padding: 20px;
+  margin-bottom: -72px;
+
+  .logo {
+    width: $width;
+    height: $width;
+    padding: 14px;
+    border-radius: 50%;
+    background-color: #ffff;
+
+    img {
+      display: block;
+      width: $width;
+      height: $width;
+    }
+  }
 }
