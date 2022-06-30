@@ -49,7 +49,7 @@ $ git clone {git_clone_ssh}
 === Generate a new application
 
 ```
-$ ng new app --directory . --prefix app --routing true --style scss --skip-git true --defaults --strict
+$ ng new starter-kit --routing true --style scss --skip-git true --defaults --strict
 ```
 
 === Create the popup module
@@ -58,17 +58,19 @@ $ ng new app --directory . --prefix app --routing true --style scss --skip-git t
 $ ng generate module popup --routing
 ```
 
+=== Create the options module
+
+```
+$ ng generate module options --routing
+```
+
 === Create the target guard
 
 ```
 $ ng generate guard target
 ```
 
-=== Create the options module
 
-```
-$ ng generate module options --routing
-```
 
 === Create background.js
 
