@@ -1,0 +1,11 @@
+{
+  "name": "Chrome Extension & Angular (Starter Kit)",
+  "description": "Base of a Chrome extension made with Angular.",
+  "version": "0.0.0",
+  "manifest_version": 3,
+  "host_permissions": ["*://*/"],
+  "action": {
+    "default_popup": "index.html?target=popup"
+  },
+  "options_page": "index.html?target=options"
+}
