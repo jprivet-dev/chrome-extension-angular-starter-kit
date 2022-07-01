@@ -31,7 +31,20 @@ toc::[]
 
 == Presentation
 
-Base of a Chrome extension made with Angular.
+=== The starter kit
+
+The starter kit presents the minimal architecture and configuration required for a Chrome extension, made with Angular, to interconnect the following bricks:
+
+* https://developer.chrome.com/docs/extensions/mv3/getstarted/#user_interface[Popup]
+* https://developer.chrome.com/docs/extensions/mv3/options/[Options]
+* https://developer.chrome.com/docs/extensions/mv3/getstarted/#background[Background]
+* https://developer.chrome.com/docs/extensions/mv3/content_scripts/[Content scripts]
+
+IMPORTANT: For the example, we assume that all these bricks are necessary, but this will not be the case for all Chrome extensions.
+
+{back_to_top}
+
+=== The advanced example
 
 {back_to_top}
 
@@ -44,48 +57,283 @@ $ git clone {git_clone_ssh}
 
 {back_to_top}
 
-== Step by step creation
+== Starter kit - PART #1: main steps
 
-=== Generate a new application
+=== Generate a new application `starter-kit`
 
 ```
 $ ng new starter-kit --routing true --style scss --skip-git true --defaults --strict
+$ cd starter-kit
 ```
 
-=== Create the popup module
+And remplace the content of `app.component.html` with the following line:
+
+```html
+<router-outlet></router-outlet>
+```
+
+{back_to_top}
+
+=== Configure ESLint & Prettier (falcutative)
+
+NOTE: See https://github.com/jprivet-dev/angular-eslint-prettier
+
+{back_to_top}
+
+=== Create the Popup module and component
+
+Create the module:
 
 ```
-$ ng generate module popup --routing
+$ ng g m popup --routing
 ```
 
-=== Create the options module
+Create the component:
 
 ```
-$ ng generate module options --routing
+$ ng g c popup
 ```
+
+And configure the routes of the Popup module:
+
+.popup-routing.module.ts
+```
+const routes: Routes = [
+  {
+    path: '',
+    component: PopupComponent,
+  },
+];
+```
+
+{back_to_top}
+
+=== Create the Options module and component
+
+Create the module:
+
+```
+$ ng g m options --routing
+```
+
+Create the component:
+
+```
+$ ng g c options
+```
+
+And configure the routes of the Options module:
+
+.options-routing.module.ts
+```
+const routes: Routes = [
+  {
+    path: '',
+    component: OptionsComponent,
+  },
+];
+```
+
+{back_to_top}
 
 === Create the target guard
 
 ```
-$ ng generate guard target
+$ ng g g target
 ```
 
+NOTE: Use the interface `CanActivate`
 
+With this guard, the urls `index.html?target=popup` and `index.html?target=options` will point to the *Popup* and *Options* modules respectively:
+
+.target.guard.ts
+```typescript
+@Injectable({
+  providedIn: 'root',
+})
+export class TargetGuard implements CanActivate {
+  constructor(private router: Router) {}
+
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ):
+    | Observable<boolean | UrlTree>
+    | Promise<boolean | UrlTree>
+    | boolean
+    | UrlTree {
+    const target = route.queryParams['target'];
+    if (['popup', 'options'].includes(target)) {
+      document.body.classList.add(target);
+      this.router.navigate([`/${target}`]);
+      return false;
+    }
+    return true;
+  }
+}
+```
+
+{back_to_top}
+
+=== Complete the `routes` of the app routing
+
+.app-routing.module.ts
+```typescript
+const routes: Routes = [
+  {
+    path: 'popup',
+    loadChildren: () =>
+      import('./popup/popup.module').then((m) => m.PopupModule),
+  },
+  {
+    path: 'options',
+    loadChildren: () =>
+      import('./options/options.module').then((m) => m.OptionsModule),
+  },
+  { path: '**', component: AppComponent, canActivate: [TargetGuard] },
+];
+```
+
+{back_to_top}
+
+=== Create the first version of the manifest
+
+Create an empty new manifest:
+
+```
+$ touch src/manifest.json
+```
+
+And copy/past the following configuration:
+
+```json
+{
+  "name": "Chrome Extension & Angular (Starter Kit)",
+  "description": "Base of a Chrome extension made with Angular.",
+  "version": "0.0.0",
+  "manifest_version": 3,
+  "host_permissions": ["*://*/"],
+  "action": {
+    "default_popup": "index.html?target=popup"
+  },
+  "options_page": "index.html?target=options"
+}
+```
+
+Add this `manifest.json` file in the assets Angular configuration:
+
+.angular.json
+```json
+{
+  "projects": {
+    "starter-kit": {
+      "architect": {
+        "build": {
+          "options": {
+            "...": "...",
+            "assets": ["src/favicon.ico", "src/assets", "src/manifest.json"],
+            "...": "..."
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+Finally, disable the `outputHashing`. Replace :
+
+.angular.json
+```json
+"outputHashing": "all",
+```
+
+With:
+
+.angular.json
+```json
+"outputHashing": "none",
+```
+
+{back_to_top}
+
+=== Build & install this first version of the Chrome extension
+
+Generate your Chrome extension in `dist/starter-kit` folder :
+
+```
+$ ng build --delete-output-path
+```
+
+In Chrome, go on `chrome://extensions`, turn on Developer mode, and Load unpacked (choose `dist/starter-kit` folder).
+
+image::doc/img/load-unpacked.png[]
+
+The extension has been successfully installed. Because no icons were included in the manifest, a generic toolbar icon will be created for the extension.
+
+Open the drop-down Extension Menu by clicking the puzzle piece icon, and click on the pushpin icon to the right of Chrome Extension & Angular. The extension is currently pinned to your Chrome browser:
+
+image::doc/img/add.png[]
+
+Click on the icon extension and see the content of the popup. Click right on the the icon extension, choose Options, and see the content of the options page:
+
+image::doc/img/options-popup.png[]
+
+{back_to_top}
+
+== Starter kit - PART #2: main steps
 
 === Create background.js
+
+We will need additional options with Webpack :
 
 ```
 npm i -D @angular-builders/custom-webpack
 ```
 
+{back_to_top}
+
 === Create content.js
-=== Install a color picker
+
+{back_to_top}
+
+=== Create the final version of the manifest
+
+```
+{
+  "name": "Chrome Extension & Angular (Starter Kit)",
+  "description": "Base of a Chrome extension made with Angular.",
+  "version": "0.0.0",
+  "manifest_version": 3,
+  "permissions": ["storage", "activeTab", "scripting"],
+  "host_permissions": ["*://*/"],
+  "action": {
+    "default_popup": "index.html?target=popup"
+  },
+  "options_page": "index.html?target=options",
+  "background": {
+    "service_worker": "background_runtime.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "js": ["content.js", "runtime.js"]
+    }
+  ]
+}
+```
+
+{back_to_top}
+
+Install a color picker
 
 ```
 $ npm i ngx-color-picker
 ```
 
 {back_to_top}
+
+== Advanced example
 
 == Troubleshooting
 
@@ -119,12 +367,14 @@ I used this solution https://github.com/angular/angular-cli/issues/20864#issueco
 
 Instead of
 
+.angular.json
 ```json
 "optimization": true
 ```
 
 put
 
+.angular.json
 ```json
 "optimization": {
   "scripts": true,
