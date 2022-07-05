@@ -57,9 +57,13 @@ $ git clone {git_clone_ssh}
 
 {back_to_top}
 
-== Starter kit - PART #1: main steps
+== Starter kit: the main stages of construction
 
-=== Generate a new application `starter-kit`
+=== Part #1: Popup & Options
+
+IMPORTANT: Here are the main stages of construction. For more details please refer to the resources.
+
+==== Generate a new application `starter-kit`
 
 ```
 $ ng new starter-kit --routing true --style scss --skip-git true --defaults --strict
@@ -74,13 +78,13 @@ And remplace the content of `app.component.html` with the following line:
 
 {back_to_top}
 
-=== Configure ESLint & Prettier (falcutative)
+==== Configure ESLint & Prettier (falcutative)
 
 NOTE: See https://github.com/jprivet-dev/angular-eslint-prettier
 
 {back_to_top}
 
-=== Create the Popup module and component
+==== Create the Popup module and component
 
 Create the module:
 
@@ -108,7 +112,7 @@ const routes: Routes = [
 
 {back_to_top}
 
-=== Create the Options module and component
+==== Create the Options module and component
 
 Create the module:
 
@@ -136,7 +140,7 @@ const routes: Routes = [
 
 {back_to_top}
 
-=== Create the target guard
+==== Create the target guard
 
 ```
 $ ng g g target
@@ -175,7 +179,7 @@ export class TargetGuard implements CanActivate {
 
 {back_to_top}
 
-=== Complete the `routes` of the app routing
+==== Complete the routes of the app routing
 
 .app-routing.module.ts
 ```typescript
@@ -196,7 +200,7 @@ const routes: Routes = [
 
 {back_to_top}
 
-=== Create the first version of the manifest
+==== Create the first version of the manifest
 
 Create an empty new manifest:
 
@@ -206,6 +210,7 @@ $ touch src/manifest.json
 
 And copy/past the following configuration:
 
+.manifest.json
 ```json
 {
   "name": "Chrome Extension & Angular (Starter Kit)",
@@ -220,25 +225,11 @@ And copy/past the following configuration:
 }
 ```
 
-Add this `manifest.json` file in the assets Angular configuration:
+Add this `manifest.json` file in the assets Angular configuration `projects.starter-kit.architect.build.options`:
 
 .angular.json
 ```json
-{
-  "projects": {
-    "starter-kit": {
-      "architect": {
-        "build": {
-          "options": {
-            "...": "...",
-            "assets": ["src/favicon.ico", "src/assets", "src/manifest.json"],
-            "...": "..."
-          }
-        }
-      }
-    }
-  }
-}
+"assets": ["src/favicon.ico", "src/assets", "src/manifest.json"],
 ```
 
 Finally, disable the `outputHashing`. Replace :
@@ -257,7 +248,7 @@ With:
 
 {back_to_top}
 
-=== Build & install this first version of the Chrome extension
+==== Build & install the version #1 of the Chrome extension
 
 Generate your Chrome extension in `dist/starter-kit` folder :
 
@@ -281,31 +272,118 @@ image::doc/img/options-popup.png[]
 
 {back_to_top}
 
-== Starter kit - PART #2: main steps
+=== Part #2: Background & Content scripts
 
-=== Create background.js
+IMPORTANT: Here are the main stages of construction. For more details please refer to the resources.
 
-We will need additional options with Webpack :
+==== Create `background.ts`
 
 ```
-npm i -D @angular-builders/custom-webpack
+$ echo 'console.log("background works!");' > src/background.ts
 ```
 
 {back_to_top}
 
-=== Create content.js
+==== Create `background_runtime.js`
+
+```
+$ touch src/background_runtime.js
+```
+
+And copy/past the following lines:
+
+.background_runtime.js
+```js
+// see https://stackoverflow.com/a/67982320
+try {
+  importScripts("background.js", "runtime.js");
+} catch (e) {
+  console.error(e);
+}
+```
 
 {back_to_top}
 
-=== Create the final version of the manifest
+==== Create `content.ts`
 
 ```
+$ echo 'console.log("content works!");' > src/content.ts
+```
+
+{back_to_top}
+
+==== Update `tsconfig.app.json`
+
+Add the `background.ts` and `content.ts` files:
+
+.tsconfig.app.json
+```json
+"files": [
+  "...",
+  "src/background.ts",
+  "src/content.ts"
+]
+```
+
+
+==== Create the compiling service worker
+
+Install the Custom Webpack Builder
+
+```
+$ npm i -D @angular-builders/custom-webpack
+```
+
+Update the `projects.app.architect.build` configuration :
+
+.angular.json
+```json
+"build": {
+  "builder": "@angular-builders/custom-webpack:browser",
+  "options": {
+    "assets": [
+      "...",
+      "src/background_runtime.js"
+    ],
+    "...": "...",
+    "customWebpackConfig": {
+      "path": "./custom-webpack.config.ts"
+    }
+  },
+```
+
+In the root of the workspace (`starter-kit`), create the file `custom-webpack.config.ts`:
+
+```
+$ touch custom-webpack.config.ts
+```
+
+And copy/past the following lines:
+
+.custom-webpack.config.ts
+```typescript
+import type { Configuration } from 'webpack';
+
+module.exports = {
+  entry: {
+    background: 'src/background.ts',
+    content: 'src/content.ts',
+  },
+} as Configuration;
+
+```
+
+==== Complete the manifest
+
+Copy/past the following lines:
+
+.manifest.json
+```json
 {
   "name": "Chrome Extension & Angular (Starter Kit)",
   "description": "Base of a Chrome extension made with Angular.",
   "version": "0.0.0",
   "manifest_version": 3,
-  "permissions": ["storage", "activeTab", "scripting"],
   "host_permissions": ["*://*/"],
   "action": {
     "default_popup": "index.html?target=popup"
@@ -324,6 +402,36 @@ npm i -D @angular-builders/custom-webpack
 ```
 
 {back_to_top}
+
+==== Build & install the version #2 of the Chrome extension
+
+Generate your Chrome extension in `dist/starter-kit` folder :
+
+```
+$ ng build --delete-output-path
+```
+
+In Chrome, go on `chrome://extensions` and click on the reload button:
+
+image::doc/img/reload.png[]
+
+Click on Inspect views service worker to view the background script's console log:
+
+image::doc/img/service-worker.png[]
+
+You can see the message "background works!":
+
+image::doc/img/background-works.png[]
+
+Then go on google.com (for example), open the https://developer.chrome.com/docs/devtools/open/[Chrome DevTools]. You can see in the console the message "content works!":
+
+image::doc/img/content-works.png[]
+
+{back_to_top}
+
+=== Part #3: Change the border color of the website
+
+IMPORTANT: Here are the main stages of construction. For more details please refer to the resources.
 
 Install a color picker
 
