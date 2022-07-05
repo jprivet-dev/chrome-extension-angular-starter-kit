@@ -7,5 +7,14 @@
   "action": {
     "default_popup": "index.html?target=popup"
   },
-  "options_page": "index.html?target=options"
+  "options_page": "index.html?target=options",
+  "background": {
+    "service_worker": "background_runtime.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "js": ["content.js", "runtime.js"]
+    }
+  ]
 }
