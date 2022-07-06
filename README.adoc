@@ -375,7 +375,7 @@ module.exports = {
 
 ==== Complete the manifest
 
-Add `background` and `content_scripts` configuration:
+Add `background_runtime.js` and `content.js` to the manifest:
 
 .manifest.json
 ```json
@@ -407,7 +407,7 @@ In Chrome, go on `chrome://extensions` and click on the reload button:
 
 image::doc/img/reload.png[]
 
-Click on Inspect views service worker to view the background script's console log:
+Click on _Inspect views service worker_ to view the background script's console log:
 
 image::doc/img/service-worker.png[]
 
@@ -425,7 +425,7 @@ image::doc/img/content-works.png[]
 
 IMPORTANT: Here are the main stages of construction. For more details please refer to the resources.
 
-Install a color picker
+First, install a color picker:
 
 ```
 $ npm i ngx-color-picker
