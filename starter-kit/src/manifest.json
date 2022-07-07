@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "manifest_version": 3,
   "host_permissions": ["*://*/"],
+  "permissions": ["storage", "activeTab", "scripting"],
   "action": {
     "default_popup": "index.html?target=popup"
   },

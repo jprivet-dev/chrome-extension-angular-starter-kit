@@ -1,1 +1,11 @@
-<p>popup works!</p>
+<span
+  [style.color]="colorPicker"
+  [cpToggle]="true"
+  [cpDialogDisplay]="'inline'"
+  [cpPositionRelativeToArrow]="true"
+  [(colorPicker)]="colorPicker"
+  [cpOKButtonText]="'Apply'"
+  [cpOKButton]="true"
+  (colorPickerSelect)="setBorderColor()"
+>
+</span>
