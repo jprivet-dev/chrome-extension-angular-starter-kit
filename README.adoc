@@ -535,7 +535,7 @@ You can have several workspaces for a single project open in your code editor (h
 
 {back_to_top}
 
-==== Save the border color in the storage
+==== Save the border color in the Chrome storage
 
 Create the `setBorderColor()` method in the `PopupComponent`:
 
@@ -561,7 +561,29 @@ export class PopupComponent {
 
 {back_to_top}
 
-==== Apply the border color
+==== Apply the color from the Chrome storage in the color picker
+
+In the `PopupComponent`, get the border color value from the Chrome storage:
+
+.popup.component.ts
+```typescript
+// ...
+export class PopupComponent implements OnInit {
+  // ...
+
+  ngOnInit() {
+    chrome.storage.sync.get('borderColor', ({ borderColor }) => {
+      this.colorPicker = borderColor ?? '';
+    });
+  }
+
+  // ...
+}
+```
+
+{back_to_top}
+
+==== Apply the border color in the website
 
 In the content script, get the border color value from the Chrome storage:
 
@@ -604,11 +626,9 @@ $ ng build --delete-output-path
 
 Go on https://www.google.com, click on the icon extension, choose a color and click on the button apply:
 
-image::doc/img/apply-color.png[]
+image::doc/img/apply-color.gif[]
 
 {back_to_top}
-
-
 
 == Advanced example
 
