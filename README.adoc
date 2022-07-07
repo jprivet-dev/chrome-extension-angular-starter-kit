@@ -250,7 +250,7 @@ With:
 
 ==== Build & install the version #1 of the Chrome extension
 
-Generate your Chrome extension in `dist/starter-kit` folder :
+Generate the Chrome extension in `dist/starter-kit` folder :
 
 ```
 $ ng build --delete-output-path
@@ -397,7 +397,7 @@ Add `background_runtime.js` and `content.js` to the manifest:
 
 ==== Build & install the version #2 of the Chrome extension
 
-Generate your Chrome extension in `dist/starter-kit` folder :
+Generate the Chrome extension in `dist/starter-kit` folder :
 
 ```
 $ ng build --delete-output-path
@@ -425,13 +425,190 @@ image::doc/img/content-works.png[]
 
 IMPORTANT: Here are the main stages of construction. For more details please refer to the resources.
 
-First, install a color picker:
+==== Install a color picker
 
 ```
 $ npm i ngx-color-picker
 ```
 
 {back_to_top}
+
+==== Insert a color picker in the popup
+
+Add the `ColorPickerModule` to the `PopupModule`:
+
+.popup.module.ts
+```typescript
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { ColorPickerModule } from 'ngx-color-picker';
+
+import { PopupRoutingModule } from './popup-routing.module';
+import { PopupComponent } from './popup.component';
+
+@NgModule({
+  declarations: [PopupComponent],
+  imports: [CommonModule, PopupRoutingModule, ColorPickerModule],
+})
+export class PopupModule {}
+```
+
+Add the `colorPicker` property in the `PopupComponent`:
+
+.popup.component.ts
+```typescript
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-popup',
+  templateUrl: './popup.component.html',
+  styleUrls: ['./popup.component.scss'],
+})
+export class PopupComponent {
+  colorPicker: string = '';
+}
+```
+
+TIP: We remove the unnecessary `constructor()` and `ngOnInit()`
+
+Remove all in the template and add the color picker:
+
+.popup.component.html
+```html
+<span
+  [style.color]="colorPicker"
+  [cpToggle]="true"
+  [cpDialogDisplay]="'inline'"
+  [cpPositionRelativeToArrow]="true"
+  [(colorPicker)]="colorPicker"
+  [cpOKButtonText]="'Apply'"
+  [cpOKButton]="true"
+>
+</span>
+```
+
+{back_to_top}
+
+==== Generate the Chrome extension & Test the popup
+
+Generate the Chrome extension in `dist/starter-kit` folder :
+
+```
+$ ng build --delete-output-path
+```
+
+TIP: In this case, it will not be necessary to reload the extension in `chrome://extensions`.
+
+Click on the icon extension - The color picker is displayed in the popup that opens:
+
+image::doc/img/popup-color-picker.png[]
+
+IMPORTANT: At this stage, no colour is applied to the site.
+
+{back_to_top}
+
+==== Install @types/chrome
+
+Install the Chrome types as shown in the documentation (https://www.npmjs.com/package/@types/chrome):
+
+```
+$ npm install --save @types/chrome
+```
+
+And add `chrome` to the types in the TS configuration :
+
+.tsconfig.app.json
+```json
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/app",
+    "types": ["chrome"]
+  },
+  "...": "..."
+}
+```
+
+After that, the code editor took the chrome keyword into account in my codes.
+
+You can have several workspaces for a single project open in your code editor (https://angular.io/guide/file-structure), and you can configure the types needed for each workspace (in the tsconfig.app.json file). In this situation, your code editor will only take the types into account in the files of the relevant and configured workspace.
+
+{back_to_top}
+
+==== Save the border color in the storage
+
+Create the `setBorderColor()` method in the `PopupComponent`:
+
+.popup.component.ts
+```typescript
+// ...
+export class PopupComponent {
+  // ...
+
+  setBorderColor(): void {
+    chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
+      chrome.storage.sync.set({ borderColor: this.colorPicker }).then(() => {
+        chrome.scripting.executeScript({
+          target: { tabId: tab.id as number },
+          files: ['content.js', 'runtime.js'],
+        });
+      });
+    });
+  }
+}
+
+```
+
+{back_to_top}
+
+==== Apply the border color
+
+In the content script, get the border color value from the Chrome storage:
+
+.content.ts
+```typescript
+console.log('content works!');
+
+chrome.storage.sync.get('borderColor', ({ borderColor }) => {
+  console.log('apply borderColor', borderColor);
+  document.body.style.border = borderColor ? `5px solid ${borderColor}` : '';
+});
+
+```
+
+{back_to_top}
+
+==== Add permissions in the manifest
+
+Add `storage`, `activeTab` and `scripting` permissions to the manifest:
+
+.manifest.json
+```json
+{
+  "...": "...",
+  "host_permissions": ["*://*/"],
+  "permissions": ["storage", "activeTab", "scripting"],
+  "...": "..."
+}
+```
+
+{back_to_top}
+
+==== Generate the Chrome extension & Test the application of the border color
+
+Generate the Chrome extension in `dist/starter-kit` folder :
+
+```
+$ ng build --delete-output-path
+```
+
+Go on https://www.google.com, click on the icon extension, choose a color and click on the button apply:
+
+image::doc/img/apply-color.png[]
+
+{back_to_top}
+
+
 
 == Advanced example
 
@@ -499,6 +676,8 @@ put
 * https://coryrylan.com/blog/angular-observable-data-services
 * https://blog.angular-university.io/how-to-build-angular2-apps-using-rxjs-observable-data-services-pitfalls-to-avoid/
 * https://medium.com/@marcosloic/managing-state-in-angular-2-using-rxjs-b849d6bbd5a5
+* https://www.npmjs.com/package/@types/chrome
+* https://stackoverflow.com/a/72881729/13480534
 
 
 {back_to_top}
