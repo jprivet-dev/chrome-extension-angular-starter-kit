@@ -632,6 +632,14 @@ image::doc/img/apply-color.gif[]
 
 == Advanced example
 
+=== Angular architecture: Container vs Presentational components
+
+Terms:
+
+* `containers`: top-level components of the route only.
+* `smarts`: components that are aware of the service layer.
+* `presentationals`: components that take inputs and emit events upon subscriptions.
+
 == Troubleshooting
 
 === A violation of the Content Security Policy
@@ -687,6 +695,8 @@ put
 
 == Resources & Inspiration
 
+=== Starter kit
+
 * https://www.justjeb.com/post/chrome-extension-with-angular-from-zero-to-a-little-hero
 * https://medium.com/@BiigDigital/angular-et-la-configuration-webpack-1f9398313e43
 * https://stackoverflow.com/questions/44208107/building-chrome-extension-popup-options-and-background-using-angular-cli
@@ -699,6 +709,9 @@ put
 * https://www.npmjs.com/package/@types/chrome
 * https://stackoverflow.com/a/72881729/13480534
 
+=== Advanced example
+
+* https://blog.angular-university.io/angular-component-design-how-to-avoid-custom-event-bubbling-and-extraneous-properties-in-the-local-component-tree/
 
 {back_to_top}
 
