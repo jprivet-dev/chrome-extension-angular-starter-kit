@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ColorPickerModule } from 'ngx-color-picker';
-import { PresetColorsComponent } from './components/preset-colors/preset-colors.component';
+import { PresetColorsComponent } from './presentationals/preset-colors/preset-colors.component';
 
 @NgModule({
   declarations: [PresetColorsComponent],

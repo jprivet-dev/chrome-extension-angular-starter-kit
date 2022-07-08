@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { PresetColorsStoreService } from '../shared/services/preset-colors-store.service';
-import { STORAGE_COLORS } from '../shared/storage.constant';
+import { PresetColorsStoreService } from '@shared/services/preset-colors-store.service';
+import { STORAGE_COLORS } from '@shared/storage.constant';
 import {
   getColorTextByHost,
   getHostFromTab,
   removeColorByHost,
   setColorByHost,
-} from '../shared/utils';
+} from '@shared/utils';
 import Tab = chrome.tabs.Tab;
 
 @Component({
@@ -23,7 +23,7 @@ export class PopupComponent implements OnInit {
   constructor(private presetColorsStore: PresetColorsStoreService) {}
 
   ngOnInit() {
-    console.info('popup executed!');
+    console.info('popup works!');
     this.presetColorsStore.loadAll();
 
     chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {

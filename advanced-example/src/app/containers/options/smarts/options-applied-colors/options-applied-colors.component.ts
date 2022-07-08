@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ColorData } from '../../../shared/color.model';
-import { STORAGE_COLORS } from '../../../shared/storage.constant';
+import { ColorData } from '@shared/color.model';
+import { STORAGE_COLORS } from '@shared/storage.constant';
 
 @Component({
   selector: 'app-options-applied-colors',

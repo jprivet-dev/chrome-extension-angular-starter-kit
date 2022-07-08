@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PresetColorsStoreService } from '../../../shared/services/preset-colors-store.service';
+import { PresetColorsStoreService } from '@shared/services/preset-colors-store.service';
 
 @Component({
   selector: 'app-options-preset-colors',
