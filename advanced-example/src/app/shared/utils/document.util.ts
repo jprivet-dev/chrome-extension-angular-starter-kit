@@ -1,23 +1,10 @@
 import { ColorData } from '../color.model';
 import { getColorTextByHost } from './color.util';
 
-export const setDocumentBackgroundColorByHost = (
+export const setDocumentBorderColorByHost = (
   colors: ColorData[] = [],
   host: string
 ): void => {
   const color = getColorTextByHost(colors, host);
-
-  color
-    ? setDocumentBackgroundColor(color)
-    : removeDocumentBackgroundColorIfAlreadyExist();
-};
-
-export const setDocumentBackgroundColor = (color: string): void => {
-  document.body.style.backgroundColor = color;
-};
-
-export const removeDocumentBackgroundColorIfAlreadyExist = (): void => {
-  if (document.body.style.backgroundColor) {
-    document.body.style.backgroundColor = '';
-  }
+  document.body.style.border = color ? `5px solid ${color}` : '';
 };
