@@ -712,6 +712,7 @@ put
 === Advanced example
 
 * https://blog.angular-university.io/angular-component-design-how-to-avoid-custom-event-bubbling-and-extraneous-properties-in-the-local-component-tree/
+* https://developer.chrome.com/docs/extensions/mv3/migrating_to_service_workers/
 
 {back_to_top}
 
