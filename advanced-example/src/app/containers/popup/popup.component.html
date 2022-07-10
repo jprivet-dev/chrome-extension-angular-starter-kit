@@ -1,15 +1,15 @@
 <div class="container">
-  <h1>Background color of {{ host }}</h1>
+  <h1>Background color of {{ host$ | async }}</h1>
 
   <span
-    [style.color]="colorPicker"
+    [style.color]="colorPicker$ | async"
     [cpToggle]="true"
     [cpDialogDisplay]="'inline'"
     [cpPositionRelativeToArrow]="true"
     [(colorPicker)]="colorPicker"
     [cpOKButtonText]="'Apply'"
     [cpOKButton]="true"
-    (colorPickerSelect)="setColor()"
+    (colorPickerSelect)="setBorderColor()"
   >
   </span>
 
@@ -19,7 +19,7 @@
     (selectEvent)="select($event)"
   ></app-preset-colors>
 
-  <button class="btn-remove-color" (click)="removeColor()">Remove color</button>
+  <button class="btn-remove-color" (click)="removeBorderColor()">Remove color</button>
 
   <button class="btn-options" (click)="openOptionsPage()">Options</button>
 </div>

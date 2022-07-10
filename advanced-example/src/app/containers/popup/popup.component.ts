@@ -1,13 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { PopupService } from '@shared/services/popup.service';
 import { PresetColorsStoreService } from '@shared/services/preset-colors-store.service';
-import { STORAGE_COLORS } from '@shared/storage.constant';
-import {
-  getColorTextByHost,
-  getHostFromTab,
-  removeColorByHost,
-  setColorByHost,
-} from '@shared/utils';
-import Tab = chrome.tabs.Tab;
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-popup',
@@ -15,67 +9,39 @@ import Tab = chrome.tabs.Tab;
   styleUrls: ['./popup.component.scss'],
 })
 export class PopupComponent implements OnInit {
-  tab!: Tab;
-  host: string = '';
   colorPicker: string = '';
+  readonly colorPicker$ = this.popupService.colorPicker$;
+  readonly host$ = this.popupService.host$;
   readonly presetColors$ = this.presetColorsStore.presetColors$;
+  private subscription: Subscription = new Subscription();
 
-  constructor(private presetColorsStore: PresetColorsStoreService) {}
+  constructor(
+    private popupService: PopupService,
+    private presetColorsStore: PresetColorsStoreService
+  ) {}
 
   ngOnInit() {
     console.info('popup works!');
     this.presetColorsStore.load();
-
-    chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
-      this.tab = tab;
-      this.host = getHostFromTab(tab);
-      chrome.storage.sync.get(STORAGE_COLORS, ({ colors }) => {
-        this.colorPicker = getColorTextByHost(colors, this.host);
-      });
+    this.subscription = this.colorPicker$.subscribe((colorPicker) => {
+      this.colorPicker = colorPicker;
     });
   }
 
   select(index: number): void {
     this.presetColorsStore.select(index);
-    this.colorPicker = this.presetColorsStore.getCurrent();
+    this.popupService.setColorPicker(this.presetColorsStore.getCurrent());
   }
 
-  setColor(): void {
-    chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
-      chrome.storage.sync.get(STORAGE_COLORS, ({ colors }) => {
-        chrome.storage.sync
-          .set({
-            [STORAGE_COLORS]: setColorByHost(
-              colors,
-              getHostFromTab(tab),
-              this.colorPicker
-            ),
-          })
-          .then(() => this.executeScript(tab));
-      });
-    });
+  setBorderColor(): void {
+    this.popupService.setBorderColor(this.popupService.getColorPicker());
   }
 
-  removeColor(): void {
-    chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
-      chrome.storage.sync.get(STORAGE_COLORS, ({ colors }) => {
-        chrome.storage.sync
-          .set({
-            [STORAGE_COLORS]: removeColorByHost(colors, getHostFromTab(tab)),
-          })
-          .then(() => this.executeScript(tab));
-      });
-    });
+  removeBorderColor(): void {
+    this.popupService.removeBorderColor();
   }
 
   openOptionsPage(): void {
     chrome.runtime.openOptionsPage();
-  }
-
-  private executeScript(tab: Tab) {
-    chrome.scripting.executeScript({
-      target: { tabId: tab.id as number },
-      files: ['content.js', 'runtime.js'],
-    });
   }
 }
