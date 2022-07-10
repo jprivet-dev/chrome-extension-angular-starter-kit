@@ -17,7 +17,7 @@ export class PresetColorsStoreService {
 
   constructor() {}
 
-  loadAll(callback?: Function): void {
+  load(callback?: Function): void {
     chrome.storage.sync.get(STORAGE_PRESET_COLORS, ({ presetColors }) => {
       this.presetColors = presetColors ?? [...this.init];
       this.presetColorsSubject.next(this.presetColors);

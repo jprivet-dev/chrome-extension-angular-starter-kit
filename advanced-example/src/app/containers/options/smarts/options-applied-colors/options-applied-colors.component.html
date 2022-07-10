@@ -1,15 +1,17 @@
 <h2>List of applied colors</h2>
 
-<div class="items" *ngIf="colors.length > 0; else noColor">
-  <div class="item" *ngFor="let colorData of colors">
-    <div class="color">
-      <div class="checkerboard"></div>
-      <div class="value" [style.background-color]="colorData.color"></div>
+<ng-container *ngIf="appliedColors$ | async as colors; else noColor">
+  <div class="items" *ngIf="colors.length; else noColor">
+    <div class="item" *ngFor="let colorData of colors">
+      <div class="color">
+        <div class="checkerboard"></div>
+        <div class="value" [style.background-color]="colorData.color"></div>
+      </div>
+      <div class="host">{{ colorData.host }}</div>
     </div>
-    <div class="host">{{ colorData.host }}</div>
   </div>
-</div>
+</ng-container>
 
 <ng-template #noColor>
-  <span>No colors applied</span>
+  <span>No colors applied.</span>
 </ng-template>

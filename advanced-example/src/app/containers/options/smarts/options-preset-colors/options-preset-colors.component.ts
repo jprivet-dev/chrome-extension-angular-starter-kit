@@ -14,7 +14,7 @@ export class OptionsPresetColorsComponent implements OnInit {
   constructor(private presetColorsStore: PresetColorsStoreService) {}
 
   ngOnInit(): void {
-    this.presetColorsStore.loadAll(() => {
+    this.presetColorsStore.load(() => {
       this.select(0);
     });
   }

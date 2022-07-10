@@ -24,7 +24,7 @@ export class PopupComponent implements OnInit {
 
   ngOnInit() {
     console.info('popup works!');
-    this.presetColorsStore.loadAll();
+    this.presetColorsStore.load();
 
     chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
       this.tab = tab;

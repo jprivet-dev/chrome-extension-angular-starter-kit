@@ -1,33 +1,32 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ColorData } from '@shared/color.model';
-import { STORAGE_COLORS } from '@shared/storage.constant';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { AppliedColorsStoreService } from '@shared/services/applied-colors-store.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-options-applied-colors',
   templateUrl: './options-applied-colors.component.html',
   styleUrls: ['./options-applied-colors.component.scss'],
 })
-export class OptionsAppliedColorsComponent implements OnInit {
-  colors: ColorData[] = [];
+export class OptionsAppliedColorsComponent implements OnInit, OnDestroy {
+  readonly appliedColors$ = this.appliedColorsStore.appliedColors$;
+  private subscription: Subscription = new Subscription();
 
-  constructor(private ref: ChangeDetectorRef) {}
+  constructor(
+    private ref: ChangeDetectorRef,
+    private appliedColorsStore: AppliedColorsStoreService
+  ) {}
 
   ngOnInit(): void {
-    this.refreshColorsFromStorage();
-
-    chrome.storage.onChanged.addListener((changes, namespace) => {
-      if (STORAGE_COLORS in changes) {
-        this.refreshColorsFromStorage(true);
-      }
+    this.subscription = this.appliedColors$.subscribe(() => {
+      // TODO: analyse and improve this trick, related to chrome.storage.sync
+      //  and BehaviorSubject in the AppliedColorsStoreService.
+      setTimeout(() => this.ref.detectChanges());
     });
+
+    this.appliedColorsStore.load();
   }
 
-  private refreshColorsFromStorage(detectChanges: boolean = false) {
-    chrome.storage.sync.get(STORAGE_COLORS, ({ colors }) => {
-      this.colors = colors;
-      if (detectChanges) {
-        this.ref.detectChanges();
-      }
-    });
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }
