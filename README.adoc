@@ -532,7 +532,7 @@ Remove all in the template and add the color picker:
   [cpDialogDisplay]="'inline'"
   [cpPositionRelativeToArrow]="true"
   [(colorPicker)]="colorPicker"
-  [cpOKButtonText]="'Apply'"
+  [cpOKButtonText]="'Apply the color'"
   [cpOKButton]="true"
 >
 </span>
