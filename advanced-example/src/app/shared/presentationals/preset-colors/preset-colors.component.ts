@@ -1,16 +1,9 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-preset-colors',
   templateUrl: './preset-colors.component.html',
   styleUrls: ['./preset-colors.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PresetColorsComponent {
   @Input() presetColors: string[] | null = [];
