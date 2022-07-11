@@ -31,7 +31,7 @@ toc::[]
 
 == Presentation
 
-=== The starter kit
+=== Starter kit
 
 The starter kit presents the minimal architecture and configuration required for a Chrome extension, made with Angular, to interconnect the following bricks:
 
@@ -40,20 +40,71 @@ The starter kit presents the minimal architecture and configuration required for
 * https://developer.chrome.com/docs/extensions/mv3/getstarted/#background[Background]
 * https://developer.chrome.com/docs/extensions/mv3/content_scripts/[Content scripts]
 
-IMPORTANT: For the example, we assume that all these bricks are necessary, but this will not be the case for all Chrome extensions.
+And allows to modify, very basically, the border color of all websites:
+
+image::doc/img/apply-color.gif[]
+
+
+NOTE: For the example, we assume that all bricks (popup, options, background, content scripts) are necessary, but this will not be the case for all Chrome extensions.
 
 {back_to_top}
 
-=== The advanced example
+=== Advanced example
+
+That example is an advanced version of the starter kit. This version allows you to change the border color by domain and to experiment with dynamic updating between the popup and the options page.
+
+NOTE: This repository will only give general technical information and will not detail the steps to build the advanced example.
+
 
 {back_to_top}
 
 == Installation
 
+=== Step #1: Clone the project
+
 [subs=attributes+]
 ```
 $ git clone {git_clone_ssh}
+$ cd {git_project}
 ```
+
+{back_to_top}
+
+=== Starter kit
+
+==== Step #2: Build / Watch
+
+Generate the Chrome extension in `dist/starter-kit` folder :
+
+```
+$ cd starter-kit
+$ npm run build
+# or
+$ npm run watch
+```
+
+==== Step #3: Install
+
+In Chrome, go on `chrome://extensions`, turn on Developer mode, and Load unpacked (choose `dist/starter-kit` folder).
+
+{back_to_top}
+
+=== Advanced example
+
+==== Step #2: Build / Watch
+
+Generate the Chrome extension in `dist/advanced-example` folder :
+
+```
+$ cd advanced-example
+$ npm run build
+# or
+$ npm run watch
+```
+
+==== Step #3: Install
+
+In Chrome, go on `chrome://extensions`, turn on Developer mode, and Load unpacked (choose `dist/advanced-example` folder).
 
 {back_to_top}
 
@@ -61,7 +112,7 @@ $ git clone {git_clone_ssh}
 
 === Part #1: Popup & Options
 
-IMPORTANT: Here are the main stages of construction. For more details please refer to the resources.
+NOTE: Here are the main stages of construction. For more details please refer to the resources.
 
 ==== Generate a new application `starter-kit`
 
@@ -253,7 +304,7 @@ With:
 Generate the Chrome extension in `dist/starter-kit` folder :
 
 ```
-$ ng build --delete-output-path
+$ npm run build
 ```
 
 In Chrome, go on `chrome://extensions`, turn on Developer mode, and Load unpacked (choose `dist/starter-kit` folder).
@@ -274,7 +325,7 @@ image::doc/img/options-popup.png[]
 
 === Part #2: Background & Content scripts
 
-IMPORTANT: Here are the main stages of construction. For more details please refer to the resources.
+NOTE: Here are the main stages of construction. For more details please refer to the resources.
 
 ==== Create `background.ts`
 
@@ -400,7 +451,7 @@ Add `background_runtime.js` and `content.js` to the manifest:
 Generate the Chrome extension in `dist/starter-kit` folder :
 
 ```
-$ ng build --delete-output-path
+$ npm run build
 ```
 
 In Chrome, go on `chrome://extensions` and click on the reload button:
@@ -421,9 +472,9 @@ image::doc/img/content-works.png[]
 
 {back_to_top}
 
-=== Part #3: Change the border color of the website
+=== Part #3: Change the border color of the websites
 
-IMPORTANT: Here are the main stages of construction. For more details please refer to the resources.
+NOTE: Here are the main stages of construction. For more details please refer to the resources.
 
 ==== Install a color picker
 
@@ -494,7 +545,7 @@ Remove all in the template and add the color picker:
 Generate the Chrome extension in `dist/starter-kit` folder :
 
 ```
-$ ng build --delete-output-path
+$ npm run build
 ```
 
 TIP: In this case, it will not be necessary to reload the extension in `chrome://extensions`.
@@ -503,7 +554,7 @@ Click on the icon extension - The color picker is displayed in the popup that op
 
 image::doc/img/popup-color-picker.png[]
 
-IMPORTANT: At this stage, no colour is applied to the site.
+NOTE: At this stage, no colour is applied to the site.
 
 {back_to_top}
 
@@ -583,7 +634,7 @@ export class PopupComponent implements OnInit {
 
 {back_to_top}
 
-==== Apply the border color in the website
+==== Apply the border color of all websites
 
 In the content script, get the border color value from the Chrome storage:
 
@@ -621,7 +672,7 @@ Add `storage`, `activeTab` and `scripting` permissions to the manifest:
 Generate the Chrome extension in `dist/starter-kit` folder :
 
 ```
-$ ng build --delete-output-path
+$ npm run build
 ```
 
 Go on https://www.google.com, click on the icon extension, choose a color and click on the button apply:
@@ -632,19 +683,29 @@ image::doc/img/apply-color.gif[]
 
 == Advanced example
 
-=== Angular architecture: Container vs Presentational components
+=== Container vs Presentational components
 
-Terms:
+This advanced example basically exploits the "Container vs Presentational components" architecture principle, from which 3 types of components can be extracted:
 
 * `containers`: top-level components of the route only.
 * `smarts`: components that are aware of the service layer.
 * `presentationals`: components that take inputs and emit events upon subscriptions.
 
-== Troubleshooting
+NOTE: More information on https://blog.angular-university.io/angular-component-design-how-to-avoid-custom-event-bubbling-and-extraneous-properties-in-the-local-component-tree/.
 
-=== A violation of the Content Security Policy
+{back_to_top}
 
-As soon as you modify the `style.css` file, for example:
+=== Observable Data Services
+
+This advanced example basically exploits the "Observable Data Services" principle.
+
+NOTE: More information on https://blog.angular-university.io/how-to-build-angular2-apps-using-rxjs-observable-data-services-pitfalls-to-avoid/.
+
+{back_to_top}
+
+=== CSS & Violation of the Content Security Policy
+
+In this advanced example, as soon as you modify the `style.css` file, for example:
 
 ```css
 body {
@@ -703,8 +764,6 @@ put
 * https://stackoverflow.com/questions/67980170/chrome-extension-background-script-into-multiple-scripts-manifest-v3
 * https://developer.chrome.com/docs/extensions/mv3/getstarted/
 * https://developer.chrome.com/docs/extensions/mv3/content_scripts/
-* https://coryrylan.com/blog/angular-observable-data-services
-* https://blog.angular-university.io/how-to-build-angular2-apps-using-rxjs-observable-data-services-pitfalls-to-avoid/
 * https://medium.com/@marcosloic/managing-state-in-angular-2-using-rxjs-b849d6bbd5a5
 * https://www.npmjs.com/package/@types/chrome
 * https://stackoverflow.com/a/72881729/13480534
@@ -713,6 +772,8 @@ put
 
 * https://blog.angular-university.io/angular-component-design-how-to-avoid-custom-event-bubbling-and-extraneous-properties-in-the-local-component-tree/
 * https://developer.chrome.com/docs/extensions/mv3/migrating_to_service_workers/
+* https://coryrylan.com/blog/angular-observable-data-services
+* https://blog.angular-university.io/how-to-build-angular2-apps-using-rxjs-observable-data-services-pitfalls-to-avoid/
 
 {back_to_top}
 
