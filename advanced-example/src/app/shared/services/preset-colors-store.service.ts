@@ -52,8 +52,6 @@ export class PresetColorsStoreService {
   private refreshStorage(presetColors: string[]): void {
     chrome.storage.sync
       .set({ [STORAGE_PRESET_COLORS]: presetColors })
-      .then(() => {
-        this.presetColorsSubject.next(presetColors);
-      });
+      .then(() => this.presetColorsSubject.next(presetColors));
   }
 }
