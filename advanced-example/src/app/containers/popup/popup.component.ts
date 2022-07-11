@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { PopupService } from '@shared/services/popup.service';
 import { PresetColorsStoreService } from '@shared/services/preset-colors-store.service';
 import { Subscription } from 'rxjs';
@@ -8,11 +8,14 @@ import { Subscription } from 'rxjs';
   templateUrl: './popup.component.html',
   styleUrls: ['./popup.component.scss'],
 })
-export class PopupComponent implements OnInit {
+export class PopupComponent implements OnInit, OnDestroy {
   colorPicker: string = '';
+
   readonly colorPicker$ = this.popupService.colorPicker$;
   readonly host$ = this.popupService.host$;
+  readonly hasBorderColor$ = this.popupService.hasBorderColor$;
   readonly presetColors$ = this.presetColorsStore.presetColors$;
+
   private subscription: Subscription = new Subscription();
 
   constructor(
@@ -43,5 +46,9 @@ export class PopupComponent implements OnInit {
 
   openOptionsPage(): void {
     chrome.runtime.openOptionsPage();
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

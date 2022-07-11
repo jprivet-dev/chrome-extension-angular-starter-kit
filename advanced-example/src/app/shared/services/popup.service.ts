@@ -20,6 +20,9 @@ export class PopupService {
   private colorPickerSubject = new BehaviorSubject<string>('');
   readonly colorPicker$ = this.colorPickerSubject.asObservable();
 
+  private hasBorderColorSubject = new BehaviorSubject<boolean>(false);
+  readonly hasBorderColor$ = this.hasBorderColorSubject.asObservable();
+
   constructor() {
     this.initColorPicker();
   }
@@ -29,7 +32,9 @@ export class PopupService {
     this.setHost(getHostFromTabUrl(tab));
 
     chrome.storage.sync.get(STORAGE_COLORS, ({ colors }) => {
-      this.setColorPicker(getColorTextByHost(colors, this.getHost()));
+      const color = getColorTextByHost(colors, this.getHost());
+      this.hasBorderColorSubject.next(!!color);
+      this.setColorPicker(color);
     });
   }
 
@@ -50,6 +55,7 @@ export class PopupService {
   }
 
   async setBorderColor(color: string): Promise<void> {
+    this.hasBorderColorSubject.next(true);
     const tab = await getCurrentTab();
 
     return chrome.storage.sync.get(STORAGE_COLORS, ({ colors }) => {
@@ -58,6 +64,7 @@ export class PopupService {
           [STORAGE_COLORS]: setColorByHost(
             colors,
             getHostFromTabUrl(tab),
+            tab.url as string,
             color
           ),
         })
@@ -66,6 +73,7 @@ export class PopupService {
   }
 
   async removeBorderColor(): Promise<void> {
+    this.hasBorderColorSubject.next(false);
     const tab = await getCurrentTab();
 
     chrome.storage.sync.get(STORAGE_COLORS, ({ colors }) => {

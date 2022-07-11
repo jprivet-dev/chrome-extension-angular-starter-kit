@@ -18,27 +18,30 @@ export const getColorByHost = (
 export const addColorByHost = (
   colors: ColorData[] = [],
   host: string,
+  url: string,
   color: string
 ): ColorData[] => {
-  return [...colors, { host, color }];
+  return [...colors, { host, url, color }];
 };
 
 export const updateColorByHost = (
   colors: ColorData[] = [],
   host: string,
+  url: string,
   color: string
 ): ColorData[] => {
-  return [...colors.filter((c) => c.host !== host), { host, color }];
+  return [...colors.filter((c) => c.host !== host), { host, url, color }];
 };
 
 export const setColorByHost = (
   colors: ColorData[] = [],
   host: string,
+  url: string,
   color: string
 ): ColorData[] => {
   return getColorByHost(colors, host)
-    ? updateColorByHost(colors, host, color)
-    : addColorByHost(colors, host, color);
+    ? updateColorByHost(colors, host, url, color)
+    : addColorByHost(colors, host, url, color);
 };
 
 export const removeColorByHost = (

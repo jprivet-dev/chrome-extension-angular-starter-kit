@@ -22,7 +22,11 @@ $width: 40px;
   border: 2px solid transparent;
   border-radius: 50%;
   cursor: pointer;
+  transition: all 0.15s ease-in-out;
 
+  &:hover,
+  &:active,
+  &:focus,
   &.current {
     border-color: #000000;
   }

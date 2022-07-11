@@ -1,8 +1,22 @@
-.container {
-  width: 232px;
-  margin: 20px auto;
-  padding: 30px 40px;
-  border-radius: 4px;
-  background-color: #ffffff;
-  box-shadow: 0 1px 6px rgb(58 75 86 / 20%);
+header {
+  $width: 35px;
+
+  background-color: #4688f1;
+  padding: 20px;
+  margin-bottom: -72px;
+
+  .logo {
+    width: $width;
+    height: $width;
+    padding: 14px;
+    border-radius: 50%;
+    background-color: #ffff;
+
+    img {
+      display: block;
+      width: $width;
+      height: $width;
+    }
+  }
 }
+

@@ -1,26 +1,55 @@
-body {
-  margin: 0;
-  background-color: #fafafa;
+$padding-x: 4px;
+
+html {
 }
 
-section {
-  $width: 35px;
+body {
+  margin: 0;
 
-  background-color: #4688f1;
-  padding: 20px;
-  margin-bottom: -72px;
+  &.options {
+    padding-bottom: 70px;
+    background-color: #fafafa;
+  }
+}
 
-  .logo {
-    width: $width;
-    height: $width;
-    padding: 14px;
-    border-radius: 50%;
-    background-color: #ffff;
+a {
+  color: #0d6efd;
+}
 
-    img {
-      display: block;
-      width: $width;
-      height: $width;
-    }
+img, svg {
+  vertical-align: middle;
+}
+
+.btn {
+  display: inline-block;
+  border: none;
+  padding: 10px;
+  color: #494949;
+  border: #c3c3c3 solid 1px;
+  border-radius: $padding-x;
+  background-color: #ffffff;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+
+  &:hover,
+  &:active,
+  &:focus {
+    background-color: #e7e7e7;
+  }
+
+  svg {
+    fill: #7a7a7a;
+  }
+}
+
+.color-picker {
+  .cp-ok-button-class {
+    @extend .btn;
+    margin-left: 0 !important;
+    width: 100%;
+  }
+
+  .hex-text .box input {
+    border-radius: $padding-x;
   }
 }
