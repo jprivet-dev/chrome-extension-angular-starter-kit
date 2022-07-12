@@ -6,7 +6,12 @@ import { STORAGE_PRESET_COLORS } from '../storage.constant';
   providedIn: 'root',
 })
 export class PresetColorsStoreService {
-  private init: string[] = ['#3aa757', '#e8453c', '#f9bb2d', '#4688f1'];
+  private DEFAULT_COLORS: string[] = [
+    '#3aa757',
+    '#e8453c',
+    '#f9bb2d',
+    '#4688f1',
+  ];
 
   private currentIndexSubject = new BehaviorSubject<number>(0);
   readonly currentIndex$ = this.currentIndexSubject.asObservable();
@@ -26,13 +31,10 @@ export class PresetColorsStoreService {
     });
   }
 
-  load(callback?: Function): void {
+  load(): void {
     chrome.storage.sync.get(STORAGE_PRESET_COLORS, ({ presetColors }) => {
-      this.presetColors = presetColors ?? [...this.init];
+      this.presetColors = presetColors ?? [...this.DEFAULT_COLORS];
       this.refreshPresetColors(this.presetColors);
-      if (callback) {
-        callback();
-      }
     });
   }
 
@@ -41,7 +43,7 @@ export class PresetColorsStoreService {
   }
 
   reset(): void {
-    this.presetColors = [...this.init];
+    this.presetColors = [...this.DEFAULT_COLORS];
     this.refreshStorage(this.presetColors);
   }
 
@@ -67,7 +69,9 @@ export class PresetColorsStoreService {
   private refreshPresetColors(presetColors: string[]) {
     this.presetColorsSubject.next(presetColors);
 
-    const diff = presetColors.filter((color) => !this.init.includes(color));
+    const diff = presetColors.filter(
+      (color) => !this.DEFAULT_COLORS.includes(color)
+    );
     this.activeResetSubject.next(diff.length > 0);
   }
 }

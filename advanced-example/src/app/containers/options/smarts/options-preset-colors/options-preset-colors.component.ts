@@ -1,28 +1,33 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { PresetColorsStoreService } from '@shared/services/preset-colors-store.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-options-preset-colors',
   templateUrl: './options-preset-colors.component.html',
   styleUrls: ['./options-preset-colors.component.scss'],
 })
-export class OptionsPresetColorsComponent implements OnInit {
+export class OptionsPresetColorsComponent implements OnInit, OnDestroy {
   colorPicker: string = '#ffffff';
   readonly presetColors$ = this.presetColorsStore.presetColors$;
   readonly activeReset$ = this.presetColorsStore.activeReset$;
   readonly currentIndex$ = this.presetColorsStore.currentIndex$;
 
+  private subscription: Subscription = new Subscription();
+
   constructor(private presetColorsStore: PresetColorsStoreService) {}
 
   ngOnInit(): void {
-    this.presetColorsStore.load(() => {
+    this.presetColorsStore.load();
+
+    this.subscription = this.presetColors$.subscribe(() => {
       this.select(0);
     });
   }
 
   select(index: number): void {
     this.presetColorsStore.select(index);
-    this.refreshCurrentColorPicker();
+    this.refreshColorPicker();
   }
 
   colorize(color: string): void {
@@ -31,10 +36,14 @@ export class OptionsPresetColorsComponent implements OnInit {
 
   reset(): void {
     this.presetColorsStore.reset();
-    this.refreshCurrentColorPicker();
+    this.refreshColorPicker();
   }
 
-  private refreshCurrentColorPicker() {
+  private refreshColorPicker() {
     this.colorPicker = this.presetColorsStore.getCurrent();
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }
