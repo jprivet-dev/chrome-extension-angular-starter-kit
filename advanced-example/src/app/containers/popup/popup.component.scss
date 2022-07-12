@@ -6,8 +6,18 @@ header {
 }
 
 section {
-  background-color: #ffffff;
+  width: 232px;
   padding: 0 15px;
+  background-color: #ffffff;
+
+  &.not-authorized {
+    padding: 10px 20px 20px;
+
+    p {
+      font-size: 0.8rem;
+      text-align: center;
+    }
+  }
 }
 
 footer {

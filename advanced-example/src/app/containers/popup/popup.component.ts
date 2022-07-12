@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { CurrentTabService } from '@shared/services/current-tab.service';
 import { PresetColorsStoreService } from '@shared/services/preset-colors-store.service';
 import { Subscription } from 'rxjs';
 import { PopupService } from './popup.service';
@@ -12,7 +13,8 @@ export class PopupComponent implements OnInit, OnDestroy {
   colorPicker: string = '';
 
   readonly colorPicker$ = this.popupService.colorPicker$;
-  readonly host$ = this.popupService.host$;
+  readonly authorized$ = this.currentTabService.authorized$;
+  readonly host$ = this.currentTabService.host$;
   readonly hasBorderColor$ = this.popupService.hasBorderColor$;
   readonly presetColors$ = this.presetColorsStore.colors$;
 
@@ -21,7 +23,8 @@ export class PopupComponent implements OnInit, OnDestroy {
   constructor(
     private ref: ChangeDetectorRef,
     private popupService: PopupService,
-    private presetColorsStore: PresetColorsStoreService
+    private presetColorsStore: PresetColorsStoreService,
+    private currentTabService: CurrentTabService
   ) {}
 
   ngOnInit() {

@@ -6,7 +6,12 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./icon.component.scss'],
 })
 export class IconComponent {
-  @Input() name!: 'arrow-rotate-left' | 'github' | 'xcross' | 'gear';
+  @Input() name!:
+    | 'arrow-rotate-left'
+    | 'github'
+    | 'xcross'
+    | 'gear'
+    | 'face-grin-beam-sweat';
   @Input() width: number = 16;
   constructor() {}
 }
