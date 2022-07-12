@@ -4,7 +4,7 @@
 
 <section *ngIf="authorized$ | async; else notAuthorized">
   <span
-    [style.color]="colorPicker$ | async"
+    [style.color]="colorPicker"
     [cpToggle]="true"
     [cpDialogDisplay]="'inline'"
     [cpPositionRelativeToArrow]="true"
