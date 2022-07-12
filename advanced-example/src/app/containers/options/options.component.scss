@@ -1,22 +1,39 @@
-header {
-  $width: 35px;
+$width: 30px;
 
+header {
+  display: flex;
+  align-items: center;
   background-color: #4688f1;
   padding: 20px;
   margin-bottom: -72px;
+}
 
-  .logo {
+section {
+  width: 232px+80;
+  margin: 20px auto;
+  border-radius: 4px;
+  background-color: #ffffff;
+  box-shadow: 0 1px 6px rgb(58 75 86 / 20%);
+}
+
+.logo {
+  width: $width;
+  height: $width;
+  padding: 14px;
+  border-radius: 50%;
+  background-color: #ffff;
+
+  img {
+    display: block;
     width: $width;
     height: $width;
-    padding: 14px;
-    border-radius: 50%;
-    background-color: #ffff;
-
-    img {
-      display: block;
-      width: $width;
-      height: $width;
-    }
   }
 }
 
+h1 {
+  margin: 0 0 6px 0;
+  padding-left: 10px;
+  font-size: 2rem;
+  font-weight: 400;
+  color: #ffffff;
+}

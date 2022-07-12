@@ -20,6 +20,10 @@ img, svg {
   vertical-align: middle;
 }
 
+.ml-auto {
+  margin-left: auto;
+}
+
 .btn {
   display: inline-block;
   border: none;
@@ -35,10 +39,6 @@ img, svg {
   &:active,
   &:focus {
     background-color: #e7e7e7;
-  }
-
-  svg {
-    fill: #7a7a7a;
   }
 }
 

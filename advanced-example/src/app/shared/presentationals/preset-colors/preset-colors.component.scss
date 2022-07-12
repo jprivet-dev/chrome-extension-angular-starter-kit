@@ -1,6 +1,6 @@
 $width: 40px;
 
-.color {
+div {
   display: inline-block;
   position: relative;
   margin: 20px 9px;
@@ -11,7 +11,7 @@ $width: 40px;
   background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAh0lEQVRYR+2W0QlAMQgD60zdfwOdqa8TmI/wQMr5K0I5bZLIzLOa2nt37VVVbd+dDx5obgCC3KBLwJ2ff4PnVidkf+ucIhw80HQaCLo3DMH3CRK3iFsmAWVl6hPNDwt8EvNE5q+YuEXcMgkonVM6SdyCoEvAnZ8v1Hjx817MilmxSUB5rdLJDycZgUAZUch/AAAAAElFTkSuQmCC);
 }
 
-.btn-select {
+button {
   display: block;
   box-sizing: border-box;
   position: absolute;

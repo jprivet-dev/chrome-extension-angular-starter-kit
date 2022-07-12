@@ -1,33 +1,22 @@
-$width: 40px;
-
-.container {
-  width: 312px;
-  margin: 20px auto;
-  border-radius: 4px;
-  background-color: #ffffff;
-  box-shadow: 0 1px 6px rgb(58 75 86 / 20%);
-}
-
 header {
   padding: 10px;
-
-  h1 {
-    text-transform: uppercase;
-    text-align: center;
-    margin: 0;
-  }
 }
 
-.body {
+section {
   padding: 0 40px;
 }
 
 footer {
   display: flex;
-  justify-content: space-between;
   padding: 10px;
   margin-top: 20px;
   background-color: #f0f2f4;
+}
+
+h2 {
+  text-transform: uppercase;
+  text-align: center;
+  margin: 0;
 }
 
 .btn-github {

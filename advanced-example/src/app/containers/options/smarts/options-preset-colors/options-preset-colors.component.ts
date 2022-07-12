@@ -9,6 +9,7 @@ import { PresetColorsStoreService } from '@shared/services/preset-colors-store.s
 export class OptionsPresetColorsComponent implements OnInit {
   colorPicker: string = '#ffffff';
   readonly presetColors$ = this.presetColorsStore.presetColors$;
+  readonly activeReset$ = this.presetColorsStore.activeReset$;
   readonly currentIndex$ = this.presetColorsStore.currentIndex$;
 
   constructor(private presetColorsStore: PresetColorsStoreService) {}
@@ -21,7 +22,7 @@ export class OptionsPresetColorsComponent implements OnInit {
 
   select(index: number): void {
     this.presetColorsStore.select(index);
-    this.colorPicker = this.presetColorsStore.getCurrent();
+    this.refreshCurrentColorPicker();
   }
 
   colorize(color: string): void {
@@ -30,5 +31,10 @@ export class OptionsPresetColorsComponent implements OnInit {
 
   reset(): void {
     this.presetColorsStore.reset();
+    this.refreshCurrentColorPicker();
+  }
+
+  private refreshCurrentColorPicker() {
+    this.colorPicker = this.presetColorsStore.getCurrent();
   }
 }

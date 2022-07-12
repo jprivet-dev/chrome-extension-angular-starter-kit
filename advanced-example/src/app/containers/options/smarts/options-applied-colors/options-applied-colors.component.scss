@@ -2,26 +2,18 @@ $width: 40px;
 $padding-x: 8px;
 $padding-y: 8px;
 
-.container {
-  width: 232px+80;
-  margin: 20px auto;
-  border-radius: 4px;
-  background-color: #ffffff;
-  box-shadow: 0 1px 6px rgb(58 75 86 / 20%);
-}
-
 header {
   padding: 10px 10px 0;
-
-  h2 {
-    text-transform: uppercase;
-    text-align: center;
-    margin: 0;
-  }
 }
 
-.body {
+section {
   padding: 15px 20px;
+}
+
+h2 {
+  text-transform: uppercase;
+  text-align: center;
+  margin: 0;
 }
 
 .btn-link {
@@ -50,22 +42,22 @@ header {
   width: $width;
   border-radius: 50%;
   background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAh0lEQVRYR+2W0QlAMQgD60zdfwOdqa8TmI/wQMr5K0I5bZLIzLOa2nt37VVVbd+dDx5obgCC3KBLwJ2ff4PnVidkf+ucIhw80HQaCLo3DMH3CRK3iFsmAWVl6hPNDwt8EvNE5q+YuEXcMgkonVM6SdyCoEvAnZ8v1Hjx817MilmxSUB5rdLJDycZgUAZUch/AAAAAElFTkSuQmCC);
+}
 
-  .value {
-    box-sizing: border-box;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: $width;
-    height: $width;
-    border-radius: 50%;
-  }
+.value {
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: $width;
+  height: $width;
+  border-radius: 50%;
 }
 
 .host {
   padding-left: $padding-x;
 }
 
-.no-colors {
+.no-applied-colors {
   text-align: center;
 }

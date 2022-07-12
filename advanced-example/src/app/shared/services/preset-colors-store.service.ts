@@ -15,12 +15,15 @@ export class PresetColorsStoreService {
   private presetColors: string[] = [];
   readonly presetColors$ = this.presetColorsSubject.asObservable();
 
+  private activeResetSubject = new BehaviorSubject<boolean>(false);
+  readonly activeReset$ = this.activeResetSubject.asObservable();
+
   constructor() {}
 
   load(callback?: Function): void {
     chrome.storage.sync.get(STORAGE_PRESET_COLORS, ({ presetColors }) => {
       this.presetColors = presetColors ?? [...this.init];
-      this.presetColorsSubject.next(this.presetColors);
+      this.refreshPresetColors(presetColors);
       if (callback) {
         callback();
       }
@@ -52,6 +55,13 @@ export class PresetColorsStoreService {
   private refreshStorage(presetColors: string[]): void {
     chrome.storage.sync
       .set({ [STORAGE_PRESET_COLORS]: presetColors })
-      .then(() => this.presetColorsSubject.next(presetColors));
+      .then(() => this.refreshPresetColors(presetColors));
+  }
+
+  private refreshPresetColors(presetColors: string[]) {
+    this.presetColorsSubject.next(presetColors);
+
+    const diff = presetColors.filter((color) => !this.init.includes(color));
+    this.activeResetSubject.next(diff.length > 0);
   }
 }

@@ -1,33 +1,34 @@
-<div class="container">
-  <header>
-    <h2>List of applied colors</h2>
-  </header>
+<header>
+  <h2>List of applied colors</h2>
+</header>
 
-  <div class="body">
-    <ng-container *ngIf="appliedColors$ | async as colors; else noColors">
-      <div class="links" *ngIf="colors.length; else noColors">
-        <a
-          class="btn btn-link"
-          title="Open in new tab"
-          target="_blank"
-          *ngFor="let colorData of colors"
-          [href]="colorData.url"
-        >
-          <div class="color">
-            <div class="checkerboard"></div>
-            <div class="value" [style.background-color]="colorData.color"></div>
-          </div>
-          <div class="host">
-            {{ colorData.host }}
-          </div>
-        </a>
-      </div>
-    </ng-container>
+<section>
+  <ng-container *ngIf="appliedColors$ | async as colors; else noColors">
+    <div class="links" *ngIf="colors.length; else noColors">
+      <a
+        class="btn btn-link"
+        title="Open in new tab"
+        target="_blank"
+        *ngFor="let colorData of colors"
+        [href]="colorData.url"
+      >
+        <div class="color">
+          <div class="checkerboard"></div>
+          <div class="value" [style.background-color]="colorData.color"></div>
+        </div>
+        <div class="host">
+          {{ colorData.host }}
+        </div>
+        <button class="btn ml-auto" title="Remove the border color on {{ colorData.url }}">
+          <app-icon name="xcross" class="red"></app-icon>
+        </button>
+      </a>
+    </div>
+  </ng-container>
 
-    <ng-template #noColors>
-      <div class="no-colors">
-        <p>No colors applied.</p>
-      </div>
-    </ng-template>
-  </div>
-</div>
+  <ng-template #noColors>
+    <div class="no-applied-colors">
+      <p>No colors applied.</p>
+    </div>
+  </ng-template>
+</section>
