@@ -18,7 +18,13 @@ export class PresetColorsStoreService {
   private activeResetSubject = new BehaviorSubject<boolean>(false);
   readonly activeReset$ = this.activeResetSubject.asObservable();
 
-  constructor() {}
+  constructor() {
+    chrome.storage.onChanged.addListener((changes, namespace) => {
+      if (STORAGE_PRESET_COLORS in changes) {
+        this.load();
+      }
+    });
+  }
 
   load(callback?: Function): void {
     chrome.storage.sync.get(STORAGE_PRESET_COLORS, ({ presetColors }) => {

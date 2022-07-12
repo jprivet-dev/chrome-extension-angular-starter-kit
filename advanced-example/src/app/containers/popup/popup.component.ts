@@ -1,7 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { PopupService } from '@shared/services/popup.service';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { PresetColorsStoreService } from '@shared/services/preset-colors-store.service';
 import { Subscription } from 'rxjs';
+import { PopupService } from './popup.service';
 
 @Component({
   selector: 'app-popup',
@@ -19,6 +19,7 @@ export class PopupComponent implements OnInit, OnDestroy {
   private subscription: Subscription = new Subscription();
 
   constructor(
+    private ref: ChangeDetectorRef,
     private popupService: PopupService,
     private presetColorsStore: PresetColorsStoreService
   ) {}
@@ -26,9 +27,20 @@ export class PopupComponent implements OnInit, OnDestroy {
   ngOnInit() {
     console.info('popup works!');
     this.presetColorsStore.load();
-    this.subscription = this.colorPicker$.subscribe((colorPicker) => {
-      this.colorPicker = colorPicker;
-    });
+
+    this.subscription.add(
+      this.colorPicker$.subscribe((colorPicker) => {
+        this.colorPicker = colorPicker;
+      })
+    );
+
+    // TODO: analyse and improve this trick, related to chrome.storage.sync
+    //  and BehaviorSubject in the PresetColorsStoreService.
+    this.subscription.add(
+      this.presetColors$.subscribe((presetColors) =>
+        setTimeout(() => this.ref.detectChanges())
+      )
+    );
   }
 
   select(index: number): void {

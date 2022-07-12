@@ -17,11 +17,11 @@ export class OptionsAppliedColorsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.subscription = this.appliedColors$.subscribe(() => {
-      // TODO: analyse and improve this trick, related to chrome.storage.sync
-      //  and BehaviorSubject in the AppliedColorsStoreService.
-      setTimeout(() => this.ref.detectChanges());
-    });
+    // TODO: analyse and improve this trick, related to chrome.storage.sync
+    //  and BehaviorSubject in the AppliedColorsStoreService.
+    this.subscription = this.appliedColors$.subscribe(() =>
+      setTimeout(() => this.ref.detectChanges())
+    );
 
     this.appliedColorsStore.load();
   }
