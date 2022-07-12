@@ -7,7 +7,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class PresetColorsComponent {
   @Input() presetColors: string[] | null = [];
-  @Input() currentIndex: number | null = 0;
+  @Input() index: number | null = 0;
   @Input() selectionIndicator: boolean = true;
   @Output() selectEvent = new EventEmitter<number>();
 

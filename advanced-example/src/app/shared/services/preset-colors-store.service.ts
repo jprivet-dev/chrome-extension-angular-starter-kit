@@ -13,15 +13,15 @@ export class PresetColorsStoreService {
     '#4688f1',
   ];
 
-  private currentIndexSubject = new BehaviorSubject<number>(0);
-  readonly currentIndex$ = this.currentIndexSubject.asObservable();
+  private indexSubject = new BehaviorSubject<number>(0);
+  readonly index$ = this.indexSubject.asObservable();
 
-  private presetColorsSubject = new BehaviorSubject<string[]>([]);
-  private presetColors: string[] = [];
-  readonly presetColors$ = this.presetColorsSubject.asObservable();
+  private colorsSubject = new BehaviorSubject<string[]>([]);
+  private colors: string[] = [];
+  readonly colors$ = this.colorsSubject.asObservable();
 
-  private activeResetSubject = new BehaviorSubject<boolean>(false);
-  readonly activeReset$ = this.activeResetSubject.asObservable();
+  private resetSubject = new BehaviorSubject<boolean>(false);
+  readonly reset$ = this.resetSubject.asObservable();
 
   constructor() {
     chrome.storage.onChanged.addListener((changes, namespace) => {
@@ -33,45 +33,46 @@ export class PresetColorsStoreService {
 
   load(): void {
     chrome.storage.sync.get(STORAGE_PRESET_COLORS, ({ presetColors }) => {
-      this.presetColors = presetColors ?? [...this.DEFAULT_COLORS];
-      this.refreshPresetColors(this.presetColors);
+      this.colors = presetColors ?? [...this.DEFAULT_COLORS];
+      this.refreshColors(this.colors);
     });
   }
 
+  first(): void {
+    this.select(0);
+  }
+
   select(index: number): void {
-    this.currentIndexSubject.next(index);
+    this.indexSubject.next(index);
   }
 
   reset(): void {
-    this.presetColors = [...this.DEFAULT_COLORS];
-    this.refreshStorage(this.presetColors);
+    this.colors = [...this.DEFAULT_COLORS];
+    this.refreshStorage(this.colors);
   }
 
-  setCurrent(color: string): void {
-    this.presetColors[this.getCurrentIndex()] = color;
-    this.refreshStorage(this.presetColors);
+  setCurrentColor(color: string): void {
+    this.colors[this.getCurrentIndex()] = color;
+    this.refreshStorage(this.colors);
   }
 
-  getCurrent(): string {
-    return this.presetColors[this.getCurrentIndex()];
+  getCurrentColor(): string {
+    return this.colors[this.getCurrentIndex()];
   }
 
   getCurrentIndex(): number {
-    return this.currentIndexSubject.getValue();
+    return this.indexSubject.getValue();
   }
 
-  private refreshStorage(presetColors: string[]): void {
+  private refreshStorage(colors: string[]): void {
     chrome.storage.sync
-      .set({ [STORAGE_PRESET_COLORS]: presetColors })
-      .then(() => this.refreshPresetColors(presetColors));
+      .set({ [STORAGE_PRESET_COLORS]: colors })
+      .then(() => this.refreshColors(colors));
   }
 
-  private refreshPresetColors(presetColors: string[]) {
-    this.presetColorsSubject.next(presetColors);
-
-    const diff = presetColors.filter(
-      (color) => !this.DEFAULT_COLORS.includes(color)
-    );
-    this.activeResetSubject.next(diff.length > 0);
+  private refreshColors(colors: string[]) {
+    this.colorsSubject.next(colors);
+    const diff = colors.filter((color) => !this.DEFAULT_COLORS.includes(color));
+    this.resetSubject.next(diff.length > 0);
   }
 }

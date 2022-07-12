@@ -1,7 +1,7 @@
 <div *ngFor="let color of presetColors; let i = index">
   <button
     [style.background-color]="color"
-    [ngClass]="{ current: selectionIndicator && i === currentIndex }"
+    [ngClass]="{ current: selectionIndicator && i === index }"
     (click)="select(i)"
   ></button>
 </div>

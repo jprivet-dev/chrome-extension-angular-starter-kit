@@ -14,7 +14,7 @@ export class PopupComponent implements OnInit, OnDestroy {
   readonly colorPicker$ = this.popupService.colorPicker$;
   readonly host$ = this.popupService.host$;
   readonly hasBorderColor$ = this.popupService.hasBorderColor$;
-  readonly presetColors$ = this.presetColorsStore.presetColors$;
+  readonly presetColors$ = this.presetColorsStore.colors$;
 
   private subscription: Subscription = new Subscription();
 
@@ -37,7 +37,7 @@ export class PopupComponent implements OnInit, OnDestroy {
     // TODO: analyse and improve this trick, related to chrome.storage.sync
     //  and BehaviorSubject in the PresetColorsStoreService.
     this.subscription.add(
-      this.presetColors$.subscribe((presetColors) =>
+      this.presetColors$.subscribe(() =>
         setTimeout(() => this.ref.detectChanges())
       )
     );
@@ -45,7 +45,7 @@ export class PopupComponent implements OnInit, OnDestroy {
 
   select(index: number): void {
     this.presetColorsStore.select(index);
-    this.popupService.setColorPicker(this.presetColorsStore.getCurrent());
+    this.popupService.setColorPicker(this.presetColorsStore.getCurrentColor());
   }
 
   setBorderColor(): void {

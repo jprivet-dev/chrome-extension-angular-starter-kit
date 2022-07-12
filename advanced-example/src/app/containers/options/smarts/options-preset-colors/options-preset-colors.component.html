@@ -4,8 +4,8 @@
 
 <section>
   <app-preset-colors
-    [presetColors]="presetColors$ | async"
-    [currentIndex]="currentIndex$ | async"
+    [presetColors]="colors$ | async"
+    [index]="index$ | async"
     (selectEvent)="select($event)"
   ></app-preset-colors>
 
@@ -26,7 +26,7 @@
   <button
     class="btn btn-reset"
     title="Reset all colors"
-    *ngIf="activeReset$ | async"
+    *ngIf="reset$ | async"
     (click)="reset()"
   >
     <app-icon name="arrow-rotate-left"></app-icon>
