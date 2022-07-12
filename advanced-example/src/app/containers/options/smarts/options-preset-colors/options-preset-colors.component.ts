@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { PresetColorsStoreService } from '@shared/services/preset-colors-store.service';
+import { PresetColorsService } from '@shared/services/preset-colors.service';
 import { combineLatest, Subscription } from 'rxjs';
 
 @Component({
@@ -10,35 +10,35 @@ import { combineLatest, Subscription } from 'rxjs';
 export class OptionsPresetColorsComponent implements OnInit, OnDestroy {
   colorPicker!: string;
 
-  readonly colors$ = this.presetColorsStore.colors$;
-  readonly reset$ = this.presetColorsStore.reset$;
-  readonly index$ = this.presetColorsStore.index$;
+  readonly colors$ = this.presetColorsService.colors$;
+  readonly reset$ = this.presetColorsService.reset$;
+  readonly index$ = this.presetColorsService.index$;
 
   private subscription: Subscription = new Subscription();
 
-  constructor(private presetColorsStore: PresetColorsStoreService) {}
+  constructor(private presetColorsService: PresetColorsService) {}
 
   ngOnInit(): void {
-    this.presetColorsStore.load();
-    this.presetColorsStore.first();
+    this.presetColorsService.load();
+    this.presetColorsService.first();
 
     this.subscription = combineLatest(this.colors$, this.index$).subscribe(
       () => {
-        this.colorPicker = this.presetColorsStore.getCurrentColor();
+        this.colorPicker = this.presetColorsService.getCurrentColor();
       }
     );
   }
 
   select(index: number): void {
-    this.presetColorsStore.select(index);
+    this.presetColorsService.select(index);
   }
 
   colorize(color: string): void {
-    this.presetColorsStore.setCurrentColor(color);
+    this.presetColorsService.setCurrentColor(color);
   }
 
   reset(): void {
-    this.presetColorsStore.reset();
+    this.presetColorsService.reset();
   }
 
   ngOnDestroy() {

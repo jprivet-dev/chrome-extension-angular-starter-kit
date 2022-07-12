@@ -6,7 +6,7 @@ import { STORAGE_COLORS } from '../storage.constant';
 @Injectable({
   providedIn: 'root',
 })
-export class AppliedColorsStoreService {
+export class AppliedColorsService {
   private colorsSubject = new BehaviorSubject<ColorData[]>([]);
   readonly appliedColors$ = this.colorsSubject.asObservable();
 

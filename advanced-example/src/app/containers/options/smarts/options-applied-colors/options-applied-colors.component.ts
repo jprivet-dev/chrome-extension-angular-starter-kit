@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { AppliedColorsStoreService } from '@shared/services/applied-colors-store.service';
+import { AppliedColorsService } from '@shared/services/applied-colors.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -8,22 +8,22 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./options-applied-colors.component.scss'],
 })
 export class OptionsAppliedColorsComponent implements OnInit, OnDestroy {
-  readonly appliedColors$ = this.appliedColorsStore.appliedColors$;
+  readonly appliedColors$ = this.appliedColorsService.appliedColors$;
   private subscription: Subscription = new Subscription();
 
   constructor(
     private ref: ChangeDetectorRef,
-    private appliedColorsStore: AppliedColorsStoreService
+    private appliedColorsService: AppliedColorsService
   ) {}
 
   ngOnInit(): void {
     // TODO: analyse and improve this trick, related to chrome.storage.sync
-    //  and BehaviorSubject in the AppliedColorsStoreService.
+    //  and BehaviorSubject in the AppliedColorsService.
     this.subscription = this.appliedColors$.subscribe(() =>
       setTimeout(() => this.ref.detectChanges())
     );
 
-    this.appliedColorsStore.load();
+    this.appliedColorsService.load();
   }
 
   ngOnDestroy() {

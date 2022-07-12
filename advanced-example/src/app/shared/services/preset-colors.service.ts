@@ -5,7 +5,7 @@ import { STORAGE_PRESET_COLORS } from '../storage.constant';
 @Injectable({
   providedIn: 'root',
 })
-export class PresetColorsStoreService {
+export class PresetColorsService {
   private DEFAULT_COLORS: string[] = [
     '#3aa757',
     '#e8453c',
