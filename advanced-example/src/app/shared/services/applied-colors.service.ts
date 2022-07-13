@@ -8,7 +8,7 @@ import { STORAGE_COLORS } from '../storage.constant';
 })
 export class AppliedColorsService {
   private colorsSubject = new BehaviorSubject<ColorData[]>([]);
-  readonly appliedColors$ = this.colorsSubject.asObservable();
+  readonly colors$ = this.colorsSubject.asObservable();
 
   constructor() {
     chrome.storage.onChanged.addListener((changes, namespace) => {

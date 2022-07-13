@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./options-applied-colors.component.scss'],
 })
 export class OptionsAppliedColorsComponent implements OnInit, OnDestroy {
-  readonly appliedColors$ = this.appliedColorsService.appliedColors$;
+  readonly colors$ = this.appliedColorsService.colors$;
   private subscription: Subscription = new Subscription();
 
   constructor(
@@ -19,11 +19,15 @@ export class OptionsAppliedColorsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // TODO: analyse and improve this trick, related to chrome.storage.sync
     //  and BehaviorSubject in the AppliedColorsService.
-    this.subscription = this.appliedColors$.subscribe(() =>
+    this.subscription = this.colors$.subscribe(() =>
       setTimeout(() => this.ref.detectChanges())
     );
 
     this.appliedColorsService.load();
+  }
+
+  remove(host: string): void {
+    console.log('host', host);
   }
 
   ngOnDestroy() {
