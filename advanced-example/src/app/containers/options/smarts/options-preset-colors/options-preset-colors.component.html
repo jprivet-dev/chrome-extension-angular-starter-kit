@@ -4,7 +4,7 @@
 
 <section>
   <app-preset-colors
-    [presetColors]="colors$ | async"
+    [presetColors]="presetColors$ | async"
     [index]="index$ | async"
     (selectEvent)="select($event)"
   ></app-preset-colors>

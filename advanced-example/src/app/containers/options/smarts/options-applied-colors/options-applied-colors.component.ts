@@ -1,5 +1,7 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { AppliedColor } from '@shared/color.model';
 import { AppliedColorsService } from '@shared/services/applied-colors.service';
+import { getHostFromTab } from '@shared/utils';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -8,7 +10,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./options-applied-colors.component.scss'],
 })
 export class OptionsAppliedColorsComponent implements OnInit, OnDestroy {
-  readonly colors$ = this.appliedColorsService.colors$;
+  readonly appliedColors$ = this.appliedColorsService.appliedColors$;
   private subscription: Subscription = new Subscription();
 
   constructor(
@@ -17,17 +19,25 @@ export class OptionsAppliedColorsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.appliedColorsService.load();
+
     // TODO: analyse and improve this trick, related to chrome.storage.sync
     //  and BehaviorSubject in the AppliedColorsService.
-    this.subscription = this.colors$.subscribe(() =>
+    this.subscription = this.appliedColors$.subscribe(() =>
       setTimeout(() => this.ref.detectChanges())
     );
-
-    this.appliedColorsService.load();
   }
 
-  remove(host: string): void {
-    console.log('host', host);
+  remove(appliedColor: AppliedColor): void {
+    this.appliedColorsService.removeAppliedColorByTab(appliedColor.tab);
+  }
+
+  url(appliedColor: AppliedColor): string {
+    return appliedColor.tab.url as string;
+  }
+
+  host(appliedColor: AppliedColor): string {
+    return getHostFromTab(appliedColor.tab);
   }
 
   ngOnDestroy() {

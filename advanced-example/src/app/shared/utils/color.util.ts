@@ -1,52 +1,71 @@
-import { ColorData } from '../color.model';
+import { AppliedColor } from '../color.model';
+import { getHostFromTab } from './tabs.util';
+import Tab = chrome.tabs.Tab;
 
-export const getColorTextByHost = (
-  colors: ColorData[] = [],
+export const getAppliedColorHexByTab = (
+  appliedColors: AppliedColor[] = [],
+  tab: Tab
+): string => {
+  const appliedColor = getAppliedColorByHost(
+    appliedColors,
+    getHostFromTab(tab)
+  );
+  return appliedColor.length ? appliedColor[0].color : '';
+};
+
+export const getAppliedColorHexByHost = (
+  appliedColors: AppliedColor[] = [],
   host: string
 ): string => {
-  const colorData = getColorByHost(colors, host);
-  return colorData.length ? colorData[0].color : '';
+  const appliedColor = getAppliedColorByHost(appliedColors, host);
+  return appliedColor.length ? appliedColor[0].color : '';
 };
 
-export const getColorByHost = (
-  colors: ColorData[] = [],
+export const getAppliedColorByHost = (
+  appliedColors: AppliedColor[] = [],
   host: string
-): ColorData[] => {
-  return colors.filter((c) => c.host === host);
+): AppliedColor[] => {
+  return appliedColors.filter((c) => getHostFromTab(c.tab) === host);
 };
 
-export const addColorByHost = (
-  colors: ColorData[] = [],
-  host: string,
-  url: string,
+export const addAppliedColorByHost = (
+  appliedColor: AppliedColor[] = [],
+  tab: Tab,
   color: string
-): ColorData[] => {
-  return [...colors, { host, url, color }];
+): AppliedColor[] => {
+  return [...appliedColor, { tab, color }];
 };
 
-export const updateColorByHost = (
-  colors: ColorData[] = [],
-  host: string,
-  url: string,
+export const updateAppliedColorByTab = (
+  appliedColors: AppliedColor[] = [],
+  tab: Tab,
   color: string
-): ColorData[] => {
-  return [...colors.filter((c) => c.host !== host), { host, url, color }];
+): AppliedColor[] => {
+  return [
+    ...appliedColors.filter(
+      (c) => getHostFromTab(c.tab) !== getHostFromTab(tab)
+    ),
+    { tab, color },
+  ];
 };
 
-export const setColorByHost = (
-  colors: ColorData[] = [],
-  host: string,
-  url: string,
+export const setAppliedColorByTab = (
+  appliedColors: AppliedColor[] = [],
+  tab: Tab,
   color: string
-): ColorData[] => {
-  return getColorByHost(colors, host)
-    ? updateColorByHost(colors, host, url, color)
-    : addColorByHost(colors, host, url, color);
+): AppliedColor[] => {
+  return getAppliedColorHexByTab(appliedColors, tab)
+    ? updateAppliedColorByTab(appliedColors, tab, color)
+    : addAppliedColorByHost(appliedColors, tab, color);
 };
 
-export const removeColorByHost = (
-  colors: ColorData[] = [],
-  host: string
-): ColorData[] => {
-  return [...colors.filter((c) => c.host !== host)];
+export const removeAppliedColorByTab = (
+  appliedColors: AppliedColor[] = [],
+  tab: Tab
+): AppliedColor[] => {
+  return [
+    ...appliedColors.filter(
+      (c) => getHostFromTab(c.tab) !== getHostFromTab(tab)
+    ),
+  ];
 };

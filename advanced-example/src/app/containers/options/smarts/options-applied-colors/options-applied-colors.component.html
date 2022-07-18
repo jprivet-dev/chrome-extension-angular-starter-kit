@@ -3,27 +3,27 @@
 </header>
 
 <section>
-  <ng-container *ngIf="colors$ | async as colors; else noColors">
-    <div class="links" *ngIf="colors.length; else noColors">
-      <div class="link" *ngFor="let colorData of colors">
+  <ng-container *ngIf="appliedColors$ | async as appliedColors; else noColors">
+    <div class="links" *ngIf="appliedColors.length; else noColors">
+      <div class="link" *ngFor="let appliedColor of appliedColors">
         <a
           class="btn btn-link"
           title="Open in new tab"
           target="_blank"
-          [href]="colorData.url"
+          [href]="url(appliedColor)"
         >
           <div class="color">
             <div class="checkerboard"></div>
-            <div class="value" [style.background-color]="colorData.color"></div>
+            <div class="value" [style.background-color]="appliedColor.color"></div>
           </div>
           <div class="host">
-            {{ colorData.host }}
+            {{ host(appliedColor) }}
           </div>
         </a>
         <button
           class="btn ml-auto"
-          title="Remove the border color on {{ colorData.url }}"
-          (click)="remove(colorData.host)"
+          title="Remove the border color on {{ url(appliedColor) }}"
+          (click)="remove(appliedColor)"
         >
           <app-icon name="xcross" class="red"></app-icon>
         </button>

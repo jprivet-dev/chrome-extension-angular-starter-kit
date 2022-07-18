@@ -1,15 +1,12 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { STORAGE_COLORS } from '../storage.constant';
 import {
-  getColorTextByHost,
+  getAppliedColorHexByTab,
   getCurrentTab,
-  getHostFromTabUrl,
+  getHostFromTab,
   getUrlFromTab,
-  removeColorByHost,
-  setColorByHost,
 } from '../utils';
-import Tab = chrome.tabs.Tab;
+import { AppliedColorsService } from './applied-colors.service';
 
 @Injectable({
   providedIn: 'root',
@@ -27,25 +24,18 @@ export class CurrentTabService {
   private hasBorderColorSubject = new BehaviorSubject<boolean>(false);
   readonly hasBorderColor$ = this.hasBorderColorSubject.asObservable();
 
-  constructor() {
-    this.init();
-  }
+  constructor(private appliedColorsService: AppliedColorsService) {}
 
-  async init(): Promise<void> {
+  async load(): Promise<void> {
     const tab = await getCurrentTab();
+
     const url = getUrlFromTab(tab);
-
     this.setAuthorized(url.protocol.indexOf('http') === 0);
-    this.setHost(url.host);
+    this.setHost(getHostFromTab(tab));
 
-    chrome.storage.sync.get(STORAGE_COLORS, ({ colors }) => {
-      const color = getColorTextByHost(colors, this.getHost());
-
-      if (color === '') {
-        return;
-      }
-
-      this.setBorderColor(color);
+    this.appliedColorsService.appliedColors$.subscribe((appliedColors) => {
+      const color = getAppliedColorHexByTab(appliedColors, tab);
+      this.initBorderColor(color);
     });
   }
 
@@ -57,50 +47,21 @@ export class CurrentTabService {
     this.hostSubject.next(host);
   }
 
-  getHost(): string {
-    return this.hostSubject.getValue();
+  initBorderColor(color: string) {
+    this.hasBorderColorSubject.next(color !== '');
+    this.borderColorSubject.next(color);
   }
 
-  async setBorderColor(color: string): Promise<void> {
+  async setBorderColor(color: string) {
     if (color === '') {
       throw new Error("'color' does not be empty.");
     }
-
-    this.hasBorderColorSubject.next(true);
-    this.borderColorSubject.next(color);
     const tab = await getCurrentTab();
-
-    return chrome.storage.sync.get(STORAGE_COLORS, ({ colors }) => {
-      chrome.storage.sync
-        .set({
-          [STORAGE_COLORS]: setColorByHost(
-            colors,
-            getHostFromTabUrl(tab),
-            tab.url as string,
-            color
-          ),
-        })
-        .then(() => this.executeScript(tab));
-    });
+    this.appliedColorsService.setAppliedColorByTab(tab, color);
   }
 
-  async removeBorderColor(): Promise<void> {
-    this.hasBorderColorSubject.next(false);
+  async removeBorderColor() {
     const tab = await getCurrentTab();
-
-    chrome.storage.sync.get(STORAGE_COLORS, ({ colors }) => {
-      chrome.storage.sync
-        .set({
-          [STORAGE_COLORS]: removeColorByHost(colors, this.getHost()),
-        })
-        .then(() => this.executeScript(tab));
-    });
-  }
-
-  private executeScript(tab: Tab): void {
-    chrome.scripting.executeScript({
-      target: { tabId: tab.id as number },
-      files: ['content.js', 'runtime.js'],
-    });
+    this.appliedColorsService.removeAppliedColorByTab(tab);
   }
 }

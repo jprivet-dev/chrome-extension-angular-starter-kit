@@ -1,5 +1,6 @@
-export interface ColorData {
-  host: string;
-  url: string;
+import Tab = chrome.tabs.Tab;
+
+export interface AppliedColor {
+  tab: Tab;
   color: string;
 }

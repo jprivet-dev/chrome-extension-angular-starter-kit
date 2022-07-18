@@ -10,7 +10,7 @@ import { combineLatest, Subscription } from 'rxjs';
 export class OptionsPresetColorsComponent implements OnInit, OnDestroy {
   colorPicker!: string;
 
-  readonly colors$ = this.presetColorsService.colors$;
+  readonly presetColors$ = this.presetColorsService.presetColors$;
   readonly reset$ = this.presetColorsService.reset$;
   readonly index$ = this.presetColorsService.index$;
 
@@ -22,11 +22,12 @@ export class OptionsPresetColorsComponent implements OnInit, OnDestroy {
     this.presetColorsService.load();
     this.presetColorsService.first();
 
-    this.subscription = combineLatest(this.colors$, this.index$).subscribe(
-      () => {
-        this.colorPicker = this.presetColorsService.getCurrentColor();
-      }
-    );
+    this.subscription = combineLatest(
+      this.presetColors$,
+      this.index$
+    ).subscribe(() => {
+      this.colorPicker = this.presetColorsService.getCurrentColor();
+    });
   }
 
   select(index: number): void {
