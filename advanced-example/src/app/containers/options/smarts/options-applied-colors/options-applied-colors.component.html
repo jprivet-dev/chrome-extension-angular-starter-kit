@@ -5,23 +5,22 @@
 <section>
   <ng-container *ngIf="appliedColors$ | async as appliedColors; else noColors">
     <div class="links" *ngIf="appliedColors.length; else noColors">
-      <div class="link" *ngFor="let appliedColor of appliedColors">
+      <div class="link-group" *ngFor="let appliedColor of appliedColors">
         <a
           class="btn btn-link"
           title="Open in new tab"
           target="_blank"
           [href]="url(appliedColor)"
         >
-          <div class="color">
-            <div class="checkerboard"></div>
-            <div class="value" [style.background-color]="appliedColor.color"></div>
+          <div class="checkerboard" >
+            <div class="color" [style.background-color]="appliedColor.color"></div>
           </div>
           <div class="host">
             {{ host(appliedColor) }}
           </div>
         </a>
         <button
-          class="btn ml-auto"
+          class="btn btn-remove"
           title="Remove the border color on {{ url(appliedColor) }}"
           (click)="remove(appliedColor)"
         >
