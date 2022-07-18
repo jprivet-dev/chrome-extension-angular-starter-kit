@@ -8,9 +8,8 @@ describe('OptionsPresetColorsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ OptionsPresetColorsComponent ]
-    })
-    .compileComponents();
+      declarations: [OptionsPresetColorsComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(OptionsPresetColorsComponent);
     component = fixture.componentInstance;

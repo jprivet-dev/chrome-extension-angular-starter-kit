@@ -7,7 +7,11 @@ import { OptionsPresetColorsComponent } from './smarts/options-preset-colors/opt
 import { OptionsAppliedColorsComponent } from './smarts/options-applied-colors/options-applied-colors.component';
 
 @NgModule({
-  declarations: [OptionsComponent, OptionsPresetColorsComponent, OptionsAppliedColorsComponent],
+  declarations: [
+    OptionsComponent,
+    OptionsPresetColorsComponent,
+    OptionsAppliedColorsComponent,
+  ],
   imports: [CommonModule, OptionsRoutingModule, SharedModule],
 })
 export class OptionsModule {}

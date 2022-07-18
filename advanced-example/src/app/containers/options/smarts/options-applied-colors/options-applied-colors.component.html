@@ -12,8 +12,11 @@
           target="_blank"
           [href]="url(appliedColor)"
         >
-          <div class="checkerboard" >
-            <div class="color" [style.background-color]="appliedColor.color"></div>
+          <div class="checkerboard">
+            <div
+              class="color"
+              [style.background-color]="appliedColor.color"
+            ></div>
           </div>
           <div class="host">
             {{ host(appliedColor) }}
