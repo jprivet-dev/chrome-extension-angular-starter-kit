@@ -1,0 +1,71 @@
+$height: 40px;
+$padding-x: 8px;
+$padding-y: 8px;
+
+header {
+  padding: 10px 10px 0;
+}
+
+section {
+  padding: 15px 20px;
+}
+
+h2 {
+  text-transform: uppercase;
+  text-align: center;
+  margin: 0;
+}
+
+.link-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.btn {
+  padding: 0;
+}
+
+.btn-link {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  text-decoration: none;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right-width: 0;
+}
+
+.checkerboard {
+  position: relative;
+  width: $height;
+  height: $height;
+  margin: $padding-y $padding-x;
+  border-radius: 50%;
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAh0lEQVRYR+2W0QlAMQgD60zdfwOdqa8TmI/wQMr5K0I5bZLIzLOa2nt37VVVbd+dDx5obgCC3KBLwJ2ff4PnVidkf+ucIhw80HQaCLo3DMH3CRK3iFsmAWVl6hPNDwt8EvNE5q+YuEXcMgkonVM6SdyCoEvAnZ8v1Hjx817MilmxSUB5rdLJDycZgUAZUch/AAAAAElFTkSuQmCC);
+}
+
+.color {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: $height;
+  height: $height;
+  border-radius: 50%;
+}
+
+.host {
+  flex: 1 1 auto;
+}
+
+.btn-remove {
+  width: $height;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.no-applied-colors {
+  text-align: center;
+}

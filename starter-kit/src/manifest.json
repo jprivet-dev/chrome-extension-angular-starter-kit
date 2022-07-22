@@ -1,0 +1,21 @@
+{
+  "name": "Chrome Extension & Angular (Starter Kit)",
+  "description": "Base of a Chrome extension made with Angular. Can change the border color of all websites.",
+  "version": "0.0.0",
+  "manifest_version": 3,
+  "host_permissions": ["*://*/"],
+  "permissions": ["storage", "activeTab", "scripting"],
+  "action": {
+    "default_popup": "index.html?target=popup"
+  },
+  "options_page": "index.html?target=options",
+  "background": {
+    "service_worker": "background_runtime.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "js": ["content.js", "runtime.js"]
+    }
+  ]
+}

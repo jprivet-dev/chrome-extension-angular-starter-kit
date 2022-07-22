@@ -1,0 +1,35 @@
+header {
+  padding: 10px;
+}
+
+section {
+  padding: 0 40px;
+}
+
+footer {
+  display: flex;
+  padding: 10px;
+  margin-top: 20px;
+  background-color: #f0f2f4;
+}
+
+h2 {
+  text-transform: uppercase;
+  text-align: center;
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+.btn-github {
+  padding: 6px;
+  border-color: transparent;
+  background-color: transparent;
+
+  &:hover,
+  &:active,
+  &:focus {
+    svg {
+      fill: #000000;
+    }
+  }
+}

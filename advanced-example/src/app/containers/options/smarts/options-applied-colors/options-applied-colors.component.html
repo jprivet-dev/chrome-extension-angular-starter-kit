@@ -1,0 +1,41 @@
+<header>
+  <h2>List of applied colors</h2>
+</header>
+
+<section>
+  <ng-container *ngIf="appliedColors$ | async as appliedColors; else noColors">
+    <div class="links" *ngIf="appliedColors.length; else noColors">
+      <div class="link-group" *ngFor="let appliedColor of appliedColors">
+        <a
+          class="btn btn-link"
+          title="Open in new tab"
+          target="_blank"
+          [href]="url(appliedColor)"
+        >
+          <div class="checkerboard">
+            <div
+              class="color"
+              [style.background-color]="appliedColor.color"
+            ></div>
+          </div>
+          <div class="host">
+            {{ host(appliedColor) }}
+          </div>
+        </a>
+        <button
+          class="btn btn-remove"
+          title="Remove the border color on {{ url(appliedColor) }}"
+          (click)="remove(appliedColor)"
+        >
+          <app-icon name="xcross" class="red"></app-icon>
+        </button>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template #noColors>
+    <div class="no-applied-colors">
+      <p>No colors applied.</p>
+    </div>
+  </ng-template>
+</section>

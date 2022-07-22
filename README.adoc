@@ -1,0 +1,831 @@
+:toc: macro
+:toc-title: Summary
+:toclevels: 3
+:numbered:
+
+ifndef::env-github[:icons: font]
+ifdef::env-github[]
+:status:
+:outfilesuffix: .adoc
+:caution-caption: :fire:
+:important-caption: :exclamation:
+:note-caption: :paperclip:
+:tip-caption: :bulb:
+:warning-caption: :warning:
+endif::[]
+
+:back_to_top_target: top-target
+:back_to_top_label: ⬆ Back to top
+:back_to_top: <<{back_to_top_target},{back_to_top_label}>>
+
+:main_title: Chrome Extension & Angular (Starter Kit)
+:git_project: chrome-extension-angular-starter-kit
+:git_username: jprivet-dev
+:git_url: https://github.com/{git_username}/{git_project}
+:git_clone_ssh: git@github.com:{git_username}/{git_project}.git
+
+[#{back_to_top_target}]
+= {main_title}
+
+toc::[]
+
+== Presentation
+
+=== Versions used
+
+|===
+| Label | Version
+
+| nvm/node | 16.15.1
+| Angular | 14.0.2
+|===
+
+=== Starter kit
+
+The starter kit presents the minimal architecture and configuration required for a Chrome extension, made with Angular, to interconnect the following bricks:
+
+* https://developer.chrome.com/docs/extensions/mv3/getstarted/#user_interface[Popup]
+* https://developer.chrome.com/docs/extensions/mv3/options/[Options]
+* https://developer.chrome.com/docs/extensions/mv3/getstarted/#background[Background]
+* https://developer.chrome.com/docs/extensions/mv3/content_scripts/[Content scripts]
+
+And allows to modify, very basically, the border color of all websites:
+
+image::doc/img/apply-color.gif[]
+
+
+NOTE: For the example, we assume that all bricks (popup, options, background, content scripts) are necessary, but this will not be the case for all Chrome extensions.
+
+{back_to_top}
+
+=== Advanced example
+
+That example is an advanced version of the starter kit. This version allows you to change the border color by domain and to experiment with dynamic updating between the popup and the options page.
+
+NOTE: This repository will only give general technical information and will not detail the steps to build the advanced example.
+
+==== Case #1: The colors are applied by domain
+
+* The colors are applied by domain from the popup.
+* The color of a page is maintained even after the page is refreshed.
+* The list of colors is updated live in the options page.
+* Applied colors can be removed from the popup.
+
+image::doc/img/advanced-example-case-1.gif[]
+
+{back_to_top}
+
+==== Case #2: Applied colors can be removed from the popup
+
+image::doc/img/advanced-example-case-2.gif[]
+
+{back_to_top}
+
+==== Case #3: Applied colors can be removed from the listing on the options page
+
+image::doc/img/advanced-example-case-3.gif[]
+
+{back_to_top}
+
+==== Case #4: Preset colors can be configured
+
+* Four preset colors can be configured from the options page.
+* These predefined colors are updated live in the extension popup and are selectable.
+* A button allows to reset the preset colors.
+
+image::doc/img/advanced-example-case-4.gif[]
+
+{back_to_top}
+
+== Installation
+
+=== Step #1: Clone the project
+
+[subs=attributes+]
+```
+$ git clone {git_clone_ssh}
+$ cd {git_project}
+```
+
+{back_to_top}
+
+=== Starter kit
+
+==== Step #2: Build / Watch
+
+Generate the Chrome extension in `dist/starter-kit` folder :
+
+```
+$ cd starter-kit
+$ npm run build
+# or
+$ npm run watch
+```
+
+==== Step #3: Install
+
+In Chrome, go on `chrome://extensions`, turn on Developer mode, and Load unpacked (choose `dist/starter-kit` folder).
+
+{back_to_top}
+
+=== Advanced example
+
+==== Step #2: Build / Watch
+
+Generate the Chrome extension in `dist/advanced-example` folder :
+
+```
+$ cd advanced-example
+$ npm run build
+# or
+$ npm run watch
+```
+
+==== Step #3: Install
+
+In Chrome, go on `chrome://extensions`, turn on Developer mode, and Load unpacked (choose `dist/advanced-example` folder).
+
+{back_to_top}
+
+== Starter kit: the main stages of construction
+
+=== Part #1: Popup & Options
+
+NOTE: Here are the main stages of construction. For more details please refer to the resources.
+
+==== Generate a new application `starter-kit`
+
+```
+$ ng new starter-kit --routing true --style scss --skip-git true --defaults --strict
+$ cd starter-kit
+```
+
+And remplace the content of `app.component.html` with the following line:
+
+```html
+<router-outlet></router-outlet>
+```
+
+{back_to_top}
+
+==== Configure ESLint & Prettier (falcutative)
+
+NOTE: See https://github.com/jprivet-dev/angular-eslint-prettier
+
+{back_to_top}
+
+==== Create the Popup module and component
+
+Create the module:
+
+```
+$ ng g m popup --routing
+```
+
+Create the component:
+
+```
+$ ng g c popup
+```
+
+And configure the routes of the Popup module:
+
+.popup-routing.module.ts
+```
+const routes: Routes = [
+  {
+    path: '',
+    component: PopupComponent,
+  },
+];
+```
+
+{back_to_top}
+
+==== Create the Options module and component
+
+Create the module:
+
+```
+$ ng g m options --routing
+```
+
+Create the component:
+
+```
+$ ng g c options
+```
+
+And configure the routes of the Options module:
+
+.options-routing.module.ts
+```
+const routes: Routes = [
+  {
+    path: '',
+    component: OptionsComponent,
+  },
+];
+```
+
+{back_to_top}
+
+==== Create the target guard
+
+```
+$ ng g g target
+```
+
+NOTE: Use the interface `CanActivate`
+
+With this guard, the urls `index.html?target=popup` and `index.html?target=options` will point to the *Popup* and *Options* modules respectively:
+
+.target.guard.ts
+```typescript
+@Injectable({
+  providedIn: 'root',
+})
+export class TargetGuard implements CanActivate {
+  constructor(private router: Router) {}
+
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ):
+    | Observable<boolean | UrlTree>
+    | Promise<boolean | UrlTree>
+    | boolean
+    | UrlTree {
+    const target = route.queryParams['target'];
+    if (['popup', 'options'].includes(target)) {
+      document.body.classList.add(target);
+      this.router.navigate([`/${target}`]);
+      return false;
+    }
+    return true;
+  }
+}
+```
+
+{back_to_top}
+
+==== Complete the routes of the app routing
+
+.app-routing.module.ts
+```typescript
+const routes: Routes = [
+  {
+    path: 'popup',
+    loadChildren: () =>
+      import('./popup/popup.module').then((m) => m.PopupModule),
+  },
+  {
+    path: 'options',
+    loadChildren: () =>
+      import('./options/options.module').then((m) => m.OptionsModule),
+  },
+  { path: '**', component: AppComponent, canActivate: [TargetGuard] },
+];
+```
+
+{back_to_top}
+
+==== Create the first version of the manifest
+
+Create an empty new manifest:
+
+```
+$ touch src/manifest.json
+```
+
+And copy/past the following configuration:
+
+.manifest.json
+```json
+{
+  "name": "Chrome Extension & Angular (Starter Kit)",
+  "description": "Base of a Chrome extension made with Angular.",
+  "version": "0.0.0",
+  "manifest_version": 3,
+  "host_permissions": ["*://*/"],
+  "action": {
+    "default_popup": "index.html?target=popup"
+  },
+  "options_page": "index.html?target=options"
+}
+```
+
+Add this `manifest.json` file in the assets Angular configuration `projects.starter-kit.architect.build.options`:
+
+.angular.json
+```json
+"assets": ["src/favicon.ico", "src/assets", "src/manifest.json"],
+```
+
+Finally, disable the `outputHashing`. Replace :
+
+.angular.json
+```json
+"outputHashing": "all",
+```
+
+With:
+
+.angular.json
+```json
+"outputHashing": "none",
+```
+
+{back_to_top}
+
+==== Build & install the version #1 of the Chrome extension
+
+Generate the Chrome extension in `dist/starter-kit` folder :
+
+```
+$ npm run build
+```
+
+In Chrome, go on `chrome://extensions`, turn on Developer mode, and Load unpacked (choose `dist/starter-kit` folder).
+
+image::doc/img/load-unpacked.png[]
+
+The extension has been successfully installed. Because no icons were included in the manifest, a generic toolbar icon will be created for the extension.
+
+Open the drop-down Extension Menu by clicking the puzzle piece icon, and click on the pushpin icon to the right of Chrome Extension & Angular. The extension is currently pinned to your Chrome browser:
+
+image::doc/img/add.png[]
+
+Click on the icon extension and see the content of the popup. Click right on the the icon extension, choose Options, and see the content of the options page:
+
+image::doc/img/options-popup.png[]
+
+{back_to_top}
+
+=== Part #2: Background & Content scripts
+
+NOTE: Here are the main stages of construction. For more details please refer to the resources.
+
+==== Create `background.ts`
+
+```
+$ echo 'console.log("background works!");' > src/background.ts
+```
+
+{back_to_top}
+
+==== Create `background_runtime.js`
+
+```
+$ touch src/background_runtime.js
+```
+
+And copy/past the following lines:
+
+.background_runtime.js
+```js
+// see https://stackoverflow.com/a/67982320
+try {
+  importScripts("background.js", "runtime.js");
+} catch (e) {
+  console.error(e);
+}
+```
+
+{back_to_top}
+
+==== Create `content.ts`
+
+```
+$ echo 'console.log("content works!");' > src/content.ts
+```
+
+{back_to_top}
+
+==== Update `tsconfig.app.json`
+
+Add the `background.ts` and `content.ts` files:
+
+.tsconfig.app.json
+```json
+"files": [
+  "...",
+  "src/background.ts",
+  "src/content.ts"
+]
+```
+
+
+==== Create the compiling service worker
+
+Install the Custom Webpack Builder
+
+```
+$ npm i -D @angular-builders/custom-webpack
+```
+
+Update the `projects.app.architect.build` configuration :
+
+.angular.json
+```json
+"build": {
+  "builder": "@angular-builders/custom-webpack:browser",
+  "options": {
+    "assets": [
+      "...",
+      "src/background_runtime.js"
+    ],
+    "...": "...",
+    "customWebpackConfig": {
+      "path": "./custom-webpack.config.ts"
+    }
+  },
+```
+
+In the root of the workspace (`starter-kit`), create the file `custom-webpack.config.ts`:
+
+```
+$ touch custom-webpack.config.ts
+```
+
+And copy/past the following lines:
+
+.custom-webpack.config.ts
+```typescript
+import type { Configuration } from 'webpack';
+
+module.exports = {
+  entry: {
+    background: 'src/background.ts',
+    content: 'src/content.ts',
+  },
+} as Configuration;
+
+```
+
+==== Complete the manifest
+
+Add `background_runtime.js` and `content.js` to the manifest:
+
+.manifest.json
+```json
+{
+  "...": "...",
+  "background": {
+    "service_worker": "background_runtime.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "js": ["content.js", "runtime.js"]
+    }
+  ]
+}
+```
+
+{back_to_top}
+
+==== Build & install the version #2 of the Chrome extension
+
+Generate the Chrome extension in `dist/starter-kit` folder :
+
+```
+$ npm run build
+```
+
+In Chrome, go on `chrome://extensions` and click on the reload button:
+
+image::doc/img/reload.png[]
+
+Click on _Inspect views service worker_ to view the background script's console log:
+
+image::doc/img/service-worker.png[]
+
+You can see the message "background works!":
+
+image::doc/img/background-works.png[]
+
+Then go on google.com (for example), open the https://developer.chrome.com/docs/devtools/open/[Chrome DevTools]. You can see in the console the message "content works!":
+
+image::doc/img/content-works.png[]
+
+{back_to_top}
+
+=== Part #3: Change the border color of the websites
+
+NOTE: Here are the main stages of construction. For more details please refer to the resources.
+
+==== Install a color picker
+
+```
+$ npm i ngx-color-picker
+```
+
+{back_to_top}
+
+==== Insert a color picker in the popup
+
+Add the `ColorPickerModule` to the `PopupModule`:
+
+.popup.module.ts
+```typescript
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { ColorPickerModule } from 'ngx-color-picker';
+
+import { PopupRoutingModule } from './popup-routing.module';
+import { PopupComponent } from './popup.component';
+
+@NgModule({
+  declarations: [PopupComponent],
+  imports: [CommonModule, PopupRoutingModule, ColorPickerModule],
+})
+export class PopupModule {}
+```
+
+Add the `colorPicker` property in the `PopupComponent`:
+
+.popup.component.ts
+```typescript
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-popup',
+  templateUrl: './popup.component.html',
+  styleUrls: ['./popup.component.scss'],
+})
+export class PopupComponent {
+  colorPicker: string = '';
+}
+```
+
+TIP: We remove the unnecessary `constructor()` and `ngOnInit()`
+
+Remove all in the template and add the color picker:
+
+.popup.component.html
+```html
+<span
+  [style.color]="colorPicker"
+  [cpToggle]="true"
+  [cpDialogDisplay]="'inline'"
+  [cpPositionRelativeToArrow]="true"
+  [(colorPicker)]="colorPicker"
+  [cpOKButtonText]="'Apply the color'"
+  [cpOKButton]="true"
+>
+</span>
+```
+
+{back_to_top}
+
+==== Generate the Chrome extension & Test the popup
+
+Generate the Chrome extension in `dist/starter-kit` folder :
+
+```
+$ npm run build
+```
+
+TIP: In this case, it will not be necessary to reload the extension in `chrome://extensions`.
+
+Click on the icon extension - The color picker is displayed in the popup that opens:
+
+image::doc/img/popup-color-picker.png[]
+
+NOTE: At this stage, no colour is applied to the site.
+
+{back_to_top}
+
+==== Install @types/chrome
+
+Install the Chrome types as shown in the documentation (https://www.npmjs.com/package/@types/chrome):
+
+```
+$ npm install --save @types/chrome
+```
+
+And add `chrome` to the types in the TS configuration :
+
+.tsconfig.app.json
+```json
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/app",
+    "types": ["chrome"]
+  },
+  "...": "..."
+}
+```
+
+After that, the code editor took the chrome keyword into account in my codes.
+
+You can have several workspaces for a single project open in your code editor (https://angular.io/guide/file-structure), and you can configure the types needed for each workspace (in the tsconfig.app.json file). In this situation, your code editor will only take the types into account in the files of the relevant and configured workspace.
+
+{back_to_top}
+
+==== Save the border color in the Chrome storage
+
+Create the `setBorderColor()` method in the `PopupComponent`:
+
+.popup.component.ts
+```typescript
+// ...
+export class PopupComponent {
+  // ...
+
+  setBorderColor(): void {
+    chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
+      chrome.storage.sync.set({ borderColor: this.colorPicker }).then(() => {
+        chrome.scripting.executeScript({
+          target: { tabId: tab.id as number },
+          files: ['content.js', 'runtime.js'],
+        });
+      });
+    });
+  }
+}
+
+```
+
+{back_to_top}
+
+==== Apply the color from the Chrome storage in the color picker
+
+In the `PopupComponent`, get the border color value from the Chrome storage:
+
+.popup.component.ts
+```typescript
+// ...
+export class PopupComponent implements OnInit {
+  // ...
+
+  ngOnInit() {
+    chrome.storage.sync.get('borderColor', ({ borderColor }) => {
+      this.colorPicker = borderColor ?? '';
+    });
+  }
+
+  // ...
+}
+```
+
+{back_to_top}
+
+==== Apply the border color of all websites
+
+In the content script, get the border color value from the Chrome storage:
+
+.content.ts
+```typescript
+console.log('content works!');
+
+chrome.storage.sync.get('borderColor', ({ borderColor }) => {
+  console.log('apply borderColor', borderColor);
+  document.body.style.border = borderColor ? `5px solid ${borderColor}` : '';
+});
+
+```
+
+{back_to_top}
+
+==== Add permissions in the manifest
+
+Add `storage`, `activeTab` and `scripting` permissions to the manifest:
+
+.manifest.json
+```json
+{
+  "...": "...",
+  "host_permissions": ["*://*/"],
+  "permissions": ["storage", "activeTab", "scripting"],
+  "...": "..."
+}
+```
+
+{back_to_top}
+
+==== Generate the Chrome extension & Test the application of the border color
+
+Generate the Chrome extension in `dist/starter-kit` folder :
+
+```
+$ npm run build
+```
+
+Go on https://www.google.com, click on the icon extension, choose a color and click on the button apply:
+
+image::doc/img/apply-color.gif[]
+
+{back_to_top}
+
+== Advanced example
+
+=== Container, Smart & Presentational components
+
+This advanced example basically exploits the "Container vs Presentational components" architecture principle, from which 3 types of components can be extracted:
+
+* `containers`: top-level components of the route only.
+* `smarts`: components that are aware of the service layer.
+* `presentationals`: components that take inputs and emit events upon subscriptions.
+
+NOTE: More information on https://blog.angular-university.io/angular-component-design-how-to-avoid-custom-event-bubbling-and-extraneous-properties-in-the-local-component-tree/.
+
+{back_to_top}
+
+=== Observable Data Services
+
+This advanced example basically exploits the "Observable Data Services" principle.
+
+NOTE: More information on https://blog.angular-university.io/how-to-build-angular2-apps-using-rxjs-observable-data-services-pitfalls-to-avoid/.
+
+{back_to_top}
+
+=== CSS & Violation of the Content Security Policy
+
+In this advanced example, as soon as you modify the `style.css` file, for example:
+
+```css
+body {
+  margin: 0;
+}
+```
+
+You will get this error at runtime:
+
+```
+Refused to execute inline event handler because it violates the following Content Security Policy directive: "script-src 'self' 'wasm-unsafe-eval'". Either the 'unsafe-inline' keyword, a hash ('sha256-...'), or a nonce ('nonce-...') is required to enable inline execution. Note that hashes do not apply to event handlers, style attributes and javascript: navigations unless the 'unsafe-hashes' keyword is present.
+```
+
+Because of the following line in the generated HTML:
+
+```
+  <style>body{margin:0}</style><link rel="stylesheet" href="styles.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="styles.css"></noscript></head>
+```
+
+It is because of inline scripting. Angular generates code by default that violates the https://developer.chrome.com/docs/apps/contentSecurityPolicy/[Content Security Policy]:
+
+> You can't use inline scripting in your Chrome App pages. The restriction bans both <script> blocks and event handlers (<button onclick="...">).
+
+I used this solution https://github.com/angular/angular-cli/issues/20864#issuecomment-844823912.
+
+Instead of
+
+.angular.json
+```json
+"optimization": true
+```
+
+put
+
+.angular.json
+```json
+"optimization": {
+  "scripts": true,
+  "styles": {
+    "minify": true,
+    "inlineCritical": false
+  },
+  "fonts": true
+},
+```
+
+{back_to_top}
+
+== Resources & Inspiration
+
+=== Starter kit
+
+* https://www.justjeb.com/post/chrome-extension-with-angular-from-zero-to-a-little-hero
+* https://medium.com/@BiigDigital/angular-et-la-configuration-webpack-1f9398313e43
+* https://stackoverflow.com/questions/44208107/building-chrome-extension-popup-options-and-background-using-angular-cli
+* https://stackoverflow.com/questions/67980170/chrome-extension-background-script-into-multiple-scripts-manifest-v3
+* https://developer.chrome.com/docs/extensions/mv3/getstarted/
+* https://developer.chrome.com/docs/extensions/mv3/content_scripts/
+* https://medium.com/@marcosloic/managing-state-in-angular-2-using-rxjs-b849d6bbd5a5
+* https://www.npmjs.com/package/@types/chrome
+* https://stackoverflow.com/a/72881729/13480534
+
+=== Advanced example
+
+* https://blog.angular-university.io/angular-component-design-how-to-avoid-custom-event-bubbling-and-extraneous-properties-in-the-local-component-tree/
+* https://developer.chrome.com/docs/extensions/mv3/migrating_to_service_workers/
+* https://coryrylan.com/blog/angular-observable-data-services
+* https://blog.angular-university.io/how-to-build-angular2-apps-using-rxjs-observable-data-services-pitfalls-to-avoid/
+
+{back_to_top}
+
+== Comments, suggestions?
+
+Feel free to make comments/suggestions to me in the {git_url}/issues[Git issues section].
+
+{back_to_top}
+
+== License
+
+"{main_title}" is released under the {git_url}/blob/main/LICENSE[*MIT License*]
+
+---
+
+{back_to_top}

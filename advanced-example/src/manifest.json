@@ -1,0 +1,27 @@
+{
+  "name": "Chrome Extension & Angular (Advanced Example)",
+  "description": "Advanced example of a base Chrome extension made with Angular. Can change the border color of websites by domain.",
+  "version": "0.0.0",
+  "manifest_version": 3,
+  "icons": {
+    "16": "assets/img/icon-16.png",
+    "48": "assets/img/icon-48.png",
+    "128": "assets/img/icon-128.png",
+    "256": "assets/img/icon-256.png"
+  },
+  "host_permissions": ["*://*/"],
+  "permissions": ["storage", "activeTab", "scripting"],
+  "action": {
+    "default_popup": "index.html?target=popup"
+  },
+  "options_page": "index.html?target=options",
+  "background": {
+    "service_worker": "background_runtime.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "js": ["content.js", "runtime.js"]
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+header {
+  padding: 10px;
+  margin-bottom: 15px;
+  background-color: #4688f1;
+  text-align: center;
+}
+
+section {
+  width: 232px;
+  padding: 0 15px;
+  background-color: #ffffff;
+
+  &.not-authorized {
+    padding: 10px 20px 20px;
+
+    p {
+      font-size: 0.8rem;
+      text-align: center;
+    }
+  }
+}
+
+footer {
+  display: flex;
+  padding: 10px;
+  background-color: #f0f2f4;
+}
+
+h1 {
+  margin: 0;
+  font-size: 1.2em;
+  color: #ffffff;
+  word-wrap: break-word !important;
+  word-break: break-word !important;
+}

@@ -1,0 +1,50 @@
+<header>
+  <h1>Border color of {{ host$ | async }}</h1>
+</header>
+
+<section *ngIf="authorized$ | async; else notAuthorized">
+  <span
+    [style.color]="colorPicker"
+    [cpToggle]="true"
+    [cpDialogDisplay]="'inline'"
+    [cpPositionRelativeToArrow]="true"
+    [(colorPicker)]="colorPicker"
+    [cpOKButtonText]="'Apply the color'"
+    [cpOKButton]="true"
+    (colorPickerSelect)="setBorderColor()"
+  >
+  </span>
+
+  <app-preset-colors
+    [presetColors]="presetColors$ | async"
+    [selectionIndicator]="false"
+    (selectEvent)="select($event)"
+  ></app-preset-colors>
+</section>
+
+<ng-template #notAuthorized>
+  <section class="not-authorized">
+    <p>
+      <app-icon name="face-grin-beam-sweat" [width]="50"></app-icon>
+    </p>
+    <p>Oops! You are not authorized to change the border color of this page.</p>
+  </section>
+</ng-template>
+
+<footer>
+  <button
+    class="btn btn-remove-color"
+    title="Remove the border color"
+    *ngIf="hasBorderColor$ | async"
+    (click)="removeBorderColor()"
+  >
+    <app-icon name="xcross" class="red"></app-icon>
+  </button>
+  <button
+    class="btn btn-options ml-auto"
+    title="Open the options page"
+    (click)="openOptionsPage()"
+  >
+    <app-icon name="gear"></app-icon>
+  </button>
+</footer>

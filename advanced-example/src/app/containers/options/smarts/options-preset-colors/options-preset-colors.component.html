@@ -1,0 +1,42 @@
+<header>
+  <h2>Preset colors</h2>
+</header>
+
+<section>
+  <app-preset-colors
+    [presetColors]="presetColors$ | async"
+    [index]="index$ | async"
+    (selectEvent)="select($event)"
+  ></app-preset-colors>
+
+  <span
+    [style.color]="colorPicker"
+    [cpToggle]="true"
+    [cpDialogDisplay]="'inline'"
+    [cpPositionRelativeToArrow]="true"
+    [(colorPicker)]="colorPicker"
+    [cpOKButtonText]="'Apply the color'"
+    [cpOKButton]="true"
+    (colorPickerSelect)="colorize(colorPicker)"
+  >
+  </span>
+</section>
+
+<footer>
+  <button
+    class="btn btn-reset"
+    title="Reset all colors"
+    *ngIf="reset$ | async"
+    (click)="reset()"
+  >
+    <app-icon name="arrow-rotate-left"></app-icon>
+  </button>
+  <a
+    class="btn btn-github ml-auto"
+    href="https://github.com/jprivet-dev/chrome-extension-angular-starter-kit"
+    title="See the project on GitHub"
+    target="_blank"
+  >
+    <app-icon name="github" [width]="24"></app-icon>
+  </a>
+</footer>

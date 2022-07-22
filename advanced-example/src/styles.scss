@@ -1,0 +1,56 @@
+$padding-x: 4px;
+
+html {
+}
+
+body {
+  margin: 0;
+
+  &.options {
+    padding-bottom: 70px;
+    background-color: #fafafa;
+  }
+}
+
+a {
+  color: #0d6efd;
+}
+
+img,
+svg {
+  vertical-align: middle;
+}
+
+.ml-auto {
+  margin-left: auto;
+}
+
+.btn {
+  display: inline-block;
+  border: none;
+  padding: 10px;
+  color: #494949;
+  border: #c3c3c3 solid 1px;
+  border-radius: $padding-x;
+  background-color: #ffffff;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+
+  &:hover,
+  &:active,
+  &:focus {
+    background-color: #e7e7e7;
+  }
+}
+
+.color-picker {
+  .cp-ok-button-class {
+    @extend .btn;
+    margin-left: 0 !important;
+    width: 100%;
+  }
+
+  .hex-text .box input {
+    border-radius: $padding-x;
+  }
+}
