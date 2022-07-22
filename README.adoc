@@ -31,6 +31,15 @@ toc::[]
 
 == Presentation
 
+=== Versions used
+
+|===
+| Label | Version
+
+| nvm/node | 16.15.1
+| Angular | 14.0.2
+|===
+
 === Starter kit
 
 The starter kit presents the minimal architecture and configuration required for a Chrome extension, made with Angular, to interconnect the following bricks:
@@ -55,6 +64,36 @@ That example is an advanced version of the starter kit. This version allows you 
 
 NOTE: This repository will only give general technical information and will not detail the steps to build the advanced example.
 
+==== Case #1: The colors are applied by domain
+
+* The colors are applied by domain from the popup.
+* The color of a page is maintained even after the page is refreshed.
+* The list of colors is updated live in the options page.
+* Applied colors can be removed from the popup.
+
+image::doc/img/advanced-example-case-1.gif[]
+
+{back_to_top}
+
+==== Case #2: Applied colors can be removed from the popup
+
+image::doc/img/advanced-example-case-2.gif[]
+
+{back_to_top}
+
+==== Case #3: Applied colors can be removed from the listing on the options page
+
+image::doc/img/advanced-example-case-3.gif[]
+
+{back_to_top}
+
+==== Case #4: Preset colors can be configured
+
+* Four preset colors can be configured from the options page.
+* These predefined colors are updated live in the extension popup and are selectable.
+* A button allows to reset the preset colors.
+
+image::doc/img/advanced-example-case-4.gif[]
 
 {back_to_top}
 
@@ -683,7 +722,7 @@ image::doc/img/apply-color.gif[]
 
 == Advanced example
 
-=== Container vs Presentational components
+=== Container, Smart & Presentational components
 
 This advanced example basically exploits the "Container vs Presentational components" architecture principle, from which 3 types of components can be extracted:
 
@@ -779,7 +818,7 @@ put
 
 == License
 
-{main_title} is released under the {git_url}/blob/main/LICENSE[*MIT License*]
+"{main_title}" is released under the {git_url}/blob/main/LICENSE[*MIT License*]
 
 ---
 
