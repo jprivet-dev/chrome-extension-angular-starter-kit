@@ -816,6 +816,12 @@ put
 
 {back_to_top}
 
+== Comments, suggestions?
+
+Feel free to make comments/suggestions to me in the {git_url}/issues[Git issues section].
+
+{back_to_top}
+
 == License
 
 "{main_title}" is released under the {git_url}/blob/main/LICENSE[*MIT License*]
